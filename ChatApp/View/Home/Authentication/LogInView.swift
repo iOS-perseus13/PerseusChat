@@ -68,11 +68,10 @@ struct LogInView: View {
                         .offset(y: -15)
                     
                     // Sign In Button
-                    HStack{
+                    Button(action: {
+                        self.userViewModel.logInState = .loggedIn
+                    }) {
                         ButtonsWithSystemImage(systemImage: .logIn(image: CustomButtonTypes.ButtonImageType.withSystemImage), buttonLabel: "Log in")
-                            .onTapGesture {
-                                self.userViewModel.logInState = .loggedIn
-                        }
                     }
                     Spacer()
                 }.padding()

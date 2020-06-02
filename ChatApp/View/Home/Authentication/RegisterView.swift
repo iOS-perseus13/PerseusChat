@@ -61,11 +61,11 @@ struct RegisterView: View {
                         .background(RoundedRectangle(cornerRadius: 5)
                             .stroke(Color.blue, lineWidth: 1))
                     // Sign Up Button
-                    HStack{
+                    
+                    Button(action: {
+                        self.userViewModel.logInState = .loggedIn
+                    }) {
                         ButtonsWithSystemImage(systemImage: .register(image: CustomButtonTypes.ButtonImageType.withSystemImage), buttonLabel: "Register")
-                            .onTapGesture {
-                                self.userViewModel.logInState = .loggedIn
-                        }
                     }
                     Spacer()
                 }.padding()
