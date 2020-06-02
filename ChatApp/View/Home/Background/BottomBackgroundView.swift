@@ -20,7 +20,7 @@ struct BottomBackgroundView: View {
         //.background(Color("BottomBackground"))
         .background(Color.clear)
        // .clipShape(Corners(conner: [.topLeft], size: CGSize(width: 55, height: 55)))
-        .overlay(Corners(conner: [.topLeft], size: CGSize(width: 55, height: 55))
+        .overlay(Corners(corner: [.topLeft], size: CGSize(width: 55, height: 55))
             .stroke(Color.blue, lineWidth: 1)
         )
     }
