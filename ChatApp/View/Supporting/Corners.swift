@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct Corners: Shape {
-    let conner: UIRectCorner
+    let corner: UIRectCorner
     let size: CGSize
     func path(in rect: CGRect)-> Path{
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: conner, cornerRadii: size)
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corner, cornerRadii: size)
         return Path(path.cgPath)
     }
 }

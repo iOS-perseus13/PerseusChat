@@ -19,7 +19,7 @@ struct MiddleBackgroundView: View {
         }
         .background(Color.gray)
         .frame(height: 100)
-        .clipShape(Corners(conner: [.topLeft, .bottomRight], size: CGSize(width: 55, height: 55)))
+        .clipShape(Corners(corner: [.topLeft, .bottomRight], size: CGSize(width: 55, height: 55)))
     }
 }
 

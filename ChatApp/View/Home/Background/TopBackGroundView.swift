@@ -19,7 +19,7 @@ struct TopBackGroundView: View {
             .padding(.top, (UIApplication.shared.windows.first?.safeAreaInsets.top)! + 5)
             .padding(.bottom, 20)
             .background(Color.clear)
-            .overlay(Corners(conner: [.bottomRight], size: CGSize(width: 55, height: 55))
+            .overlay(Corners(corner: [.bottomRight], size: CGSize(width: 55, height: 55))
                 .stroke(Color.blue, lineWidth: 1)
             )
             Text("")

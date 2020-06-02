@@ -47,7 +47,10 @@ struct User: Codable{
     var userType: UserType = .normal
     var loggInSince: Int = -1
     var logInState: LogInState = .unknown
-    
+    var image: String? = nil
+    var currentStatus: String = ""
+    var allowNotifcation: Bool = false
+    var doNotDisturb: Bool = false 
 }
 /*
  Object to store in UserDefaults
