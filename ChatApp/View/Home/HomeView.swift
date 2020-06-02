@@ -16,7 +16,6 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             Form{
-                
                 // profile section
                 Section(header:
                     Text("PROFILE")
@@ -130,6 +129,7 @@ struct EditableLabel: View {
                 
             } else {
                 Text(placeHolder)
+                    .opacity(isEditingMode ? 0 : 0.9)
             }
         }
     }
