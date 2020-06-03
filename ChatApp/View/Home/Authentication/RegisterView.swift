@@ -7,16 +7,52 @@
 //
 
 import SwiftUI
+import Combine
+
+
+
 
 struct RegisterView: View {
+    enum Border{
+        case error
+        case normal
+        var color: Color{
+            switch self{
+            case .error: return .red
+            case .normal: return .blue
+            }
+        }
+    }
+    enum TextBoxType: Equatable{
+        case email
+        case password
+        case confirmPassword
+        
+        var placeHolder: String{
+            switch self{
+            case .password: return "Password"
+            case .confirmPassword: return "Confirm password"
+            case .email: return "Email address"
+            }
+        }
+    }
+    
     @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
+    
     @State var email: String = ""
     @State var password: String = ""
-    @State var shouldShowSheet: Bool = false
+    @State var confirmPassword: String = ""
+    @State var passwordString: String = ""
+    @State var confirmPasswordString: String = ""
+    
+    @State var textFieldHavingError: TextBoxType?
+    
+    @State var shouldShowAlert: Bool = false
+    @State var alertItem: Alert?
     var body: some View {
         NavigationView{
-            VStack(){
+            VStack{
                 // Registration Button
                 HStack {
                     Spacer()
@@ -47,23 +83,94 @@ struct RegisterView: View {
                         .padding(.top, 35)
                     // Email text box
                     TextField("Email",text:  self.$email)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.blue, lineWidth: 1))
+                        .padding(10)
+                        .overlay(RoundedRectangle(cornerRadius: 5)
+                            .stroke(self.email.count > 8 && !self.email.isEmpty && !self.email.isValidEmailAddress()
+                                ?  Border.error.color : Border.normal.color, lineWidth: 1)
+                    )
+                        .autocapitalization(.none)
+                    
                     // password text box
-                    SecureField("Password",text:  self.$password)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.blue, lineWidth: 1))
-                    // password text box
-                    SecureField("Password",text:  self.$password)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.blue, lineWidth: 1))
+                    TextField(TextBoxType.password.placeHolder.titleCase(), text: $password, onEditingChanged: { _ in
+                        self.textFieldHavingError = nil
+                    })
+                        .padding(10)
+                        .autocapitalization(.none)
+                        .overlay(RoundedRectangle(cornerRadius: 5)
+                            .stroke( (self.textFieldHavingError == .password) && (self.password.count < 6)
+                                ?  Border.error.color : Border.normal.color, lineWidth: 1)
+                            .onReceive(Just(password)) { (newValue) in
+                                if self.passwordString.count == newValue.count {
+                                    return
+                                }
+                                if let lastCharacter = newValue.last{
+                                    if self.passwordString.count < self.password.count {
+                                        self.passwordString.append(lastCharacter)
+                                    } else {
+                                        self.passwordString = String(self.passwordString.dropLast(1))
+                                    }
+                                    self.password = String(repeating: "*", count: newValue.count)
+                                }
+                            }
+                    )
+                    // Confirm password text box
+                    TextField(TextBoxType.confirmPassword.placeHolder.titleCase(), text: $confirmPassword, onEditingChanged: { _ in
+                        self.textFieldHavingError = nil
+                    })
+                        .padding(10)
+                        .autocapitalization(.none)
+                        .overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke( (self.textFieldHavingError == .confirmPassword) && (self.confirmPassword.count < 6)
+                                ?  Border.error.color : Border.normal.color, lineWidth: 1)
+                            .onReceive(Just(confirmPassword)) { (newValue) in
+                                if self.confirmPasswordString.count == newValue.count {
+                                    return
+                                }
+                                if let lastCharacter = newValue.last{
+                                    if self.confirmPasswordString.count < self.confirmPassword.count {
+                                        self.confirmPasswordString.append(lastCharacter)
+                                    } else {
+                                        self.confirmPasswordString = String(self.confirmPasswordString.dropLast(1))
+                                    }
+                                    self.confirmPassword = String(repeating: "*", count: newValue.count)
+                                }
+                            }
+                    )
                     // Sign Up Button
                     HStack{
                         Button(action: {
-                            self.userViewModel.logInState = .loggedIn
+                            let firebaseManager = FirebaseAuthManager.shared
+                            if self.checkForValidInput() {
+                                firebaseManager.createUser(loginInfo: LoginInfo(email: self.email, password: self.passwordString)){ (response) in
+                                    switch response{
+                                    case .success(let data):
+                                        if let _ = data{
+                                        }
+                                    case .failure(let error):
+                                        let customAlertType = APPAlerts.unknownError
+                                        self.alertItem = Alert(title: Text(customAlertType.title),
+                                                               message: Text(error.localizedDescription),
+                                                               dismissButton: customAlertType.dissmissButton)
+                                        self.shouldShowAlert = true
+                                    }
+                                }
+                            }
+                            else {
+                                var customAlertType = APPAlerts.unknownError
+                                switch self.textFieldHavingError {
+                                case .email:
+                                    customAlertType = .invalidEmailAddress
+                                case .password, .confirmPassword:
+                                    customAlertType = .passwordError
+                                default:
+                                    break
+                                }
+                                self.alertItem = Alert(title: Text(customAlertType.title),
+                                                       message: Text(customAlertType.message),
+                                                       dismissButton: customAlertType.dissmissButton)
+                                self.shouldShowAlert = true
+                            }
+                           // self.userViewModel.logInState = .loggedIn
                         }) {
                             HStack(spacing: 20){
                                 Image(systemName: CustomButtonTypes.register(image: CustomButtonTypes.ButtonImageType.withSystemImage).image)
@@ -85,10 +192,38 @@ struct RegisterView: View {
                 }.padding()
                 
             }.navigationBarTitle("Register",displayMode: .inline)
-            //                .alert(isPresented: self.$shouldShowSheet) {
-            //                    Alert(title: Text("Should send email to reset password."))
-            //            }
+                .alert(isPresented: self.$shouldShowAlert) {
+                    if let alertItem = self.alertItem {
+                        return alertItem
+                    } else {
+                        return Alert(title: Text("Unknown alert"))
+                    }
+            }
         }
+    }
+    /*
+     Function to check for valid input
+     */
+    private func checkForValidInput()->Bool{
+        let emailAddress = self.email.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !emailAddress.isValidEmailAddress(){
+            self.textFieldHavingError = .email
+            return false
+        }
+        if self.password.isEmpty {
+            self.textFieldHavingError = .password
+            return false
+        }
+        if self.confirmPassword.isEmpty{
+            self.textFieldHavingError = .confirmPassword
+            return false
+        }
+        if self.password != self.confirmPassword {
+            self.textFieldHavingError = .password
+            return false
+        }
+        self.textFieldHavingError = nil
+        return true
     }
 }
 

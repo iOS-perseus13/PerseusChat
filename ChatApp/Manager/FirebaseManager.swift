@@ -115,7 +115,7 @@ class FirebaseAuthManager: FireBaseManagerType{
     }
     func loadProfileImage(userID: String, completion: @escaping (Result<UIImage?, FireBaseError>)->Void){
         let storage = Storage.storage()
-        let storageReferance = storage.reference(forURL: "gs://umbrellabinding.appspot.com")
+        let storageReferance = storage.reference(forURL: "gs://perseus-chat-app.appspot.com/")
         let storageProfileReference = storageReferance.child("profile").child(userID)
         storageProfileReference.getData(maxSize: 3*1024*1024) { (data, error) in
             if let data = data, let image = UIImage(data: data) {

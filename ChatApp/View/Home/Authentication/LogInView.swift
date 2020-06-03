@@ -48,8 +48,11 @@ struct LogInView: View {
                     // Email text box
                     TextField("Email",text:  self.$email)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.blue, lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke(self.email.count > 8 && !self.email.isEmpty && !self.email.isValidEmailAddress()
+                                    ?  Color.red : Color.blue, lineWidth: 1)
+                        )
+                        .autocapitalization(.none)
                     // password text box
                     SecureField("Password",text:  self.$password)
                         .padding()

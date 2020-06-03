@@ -1,13 +1,12 @@
 //
-//  All Enums.swift
+//  Button+with+image.swift
 //  ChatApp
 //
-//  Created by Sheikh Ahmed on 02/06/2020.
+//  Created by Sheikh Ahmed on 03/06/2020.
 //  Copyright © 2020 Perseus International. All rights reserved.
 //
 
 import Foundation
-
 enum SystemImages: String{
     case register = "person.badge.plus.fill"
     case logIn = "person.fill"
@@ -29,9 +28,4 @@ enum CustomButtonTypes {
         }
         return ""
     }
-}
-
-enum AuthenticationViewTypes{
-    case login
-    case register
 }
