@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,6 +47,7 @@
 		F094249724862D310069B045 /* AppTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094249624862D310069B045 /* AppTabs.swift */; };
 		F094249B248672750069B045 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094249A248672750069B045 /* FirebaseManager.swift */; };
 		F094249D248674270069B045 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094249C248674270069B045 /* GoogleService-Info.plist */; };
+		F0F623EE24875D6700D0424C /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623ED24875D6700D0424C /* LogIn.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		F094249624862D310069B045 /* AppTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabs.swift; sourceTree = "<group>"; };
 		F094249A248672750069B045 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		F094249C248674270069B045 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ChatApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F0F623ED24875D6700D0424C /* LogIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +116,6 @@
 				3AEE662CC2AB7DA4B94B172A /* Pods-ChatApp.debug.xcconfig */,
 				7A2740C0DD6B97C348E5837A /* Pods-ChatApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -217,6 +218,7 @@
 			children = (
 				F057DE8824844D370071E75C /* User.swift */,
 				F094247724861D480069B045 /* MoreModel.swift */,
+				F0F623ED24875D6700D0424C /* LogIn.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -442,6 +444,7 @@
 				F057DE7E24844CA60071E75C /* HomeView.swift in Sources */,
 				F094249024862C060069B045 /* ChatView.swift in Sources */,
 				F057DE9C2484CF5F0071E75C /* TopView.swift in Sources */,
+				F0F623EE24875D6700D0424C /* LogIn.swift in Sources */,
 				F057DE9524846C430071E75C /* MainView.swift in Sources */,
 				F094247F24861DB40069B045 /* AppFeedbackView.swift in Sources */,
 				F094248C248620430069B045 /* CustomAlerts.swift in Sources */,
