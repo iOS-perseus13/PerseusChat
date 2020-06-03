@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,8 +28,6 @@
 		F057DE9C2484CF5F0071E75C /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057DE9B2484CF5F0071E75C /* TopView.swift */; };
 		F057DEA02484ECD40071E75C /* BottomBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057DE9F2484ECD40071E75C /* BottomBackgroundView.swift */; };
 		F057DEA42484F3FF0071E75C /* TopBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057DEA32484F3FF0071E75C /* TopBackGroundView.swift */; };
-		F094246E248606A80069B045 /* ButtonsWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094246D248606A80069B045 /* ButtonsWithImage.swift */; };
-		F094247124860A480069B045 /* All Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247024860A480069B045 /* All Enums.swift */; };
 		F094247424861C560069B045 /* MiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247324861C560069B045 /* MiddleView.swift */; };
 		F094247624861D150069B045 /* MoreMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247524861D150069B045 /* MoreMenuViewModel.swift */; };
 		F094247824861D480069B045 /* MoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247724861D480069B045 /* MoreModel.swift */; };
@@ -47,6 +45,11 @@
 		F094249724862D310069B045 /* AppTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094249624862D310069B045 /* AppTabs.swift */; };
 		F094249B248672750069B045 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094249A248672750069B045 /* FirebaseManager.swift */; };
 		F094249D248674270069B045 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094249C248674270069B045 /* GoogleService-Info.plist */; };
+		F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */; };
+		F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */; };
+		F0F623EE24875D6700D0424C /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623ED24875D6700D0424C /* LogIn.swift */; };
+		F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623EF24875E7200D0424C /* ImagePickerView.swift */; };
+		F0F623F224875EB100D0424C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623F124875EB100D0424C /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,8 +78,6 @@
 		F057DE9B2484CF5F0071E75C /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
 		F057DE9F2484ECD40071E75C /* BottomBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBackgroundView.swift; sourceTree = "<group>"; };
 		F057DEA32484F3FF0071E75C /* TopBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBackGroundView.swift; sourceTree = "<group>"; };
-		F094246D248606A80069B045 /* ButtonsWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsWithImage.swift; sourceTree = "<group>"; };
-		F094247024860A480069B045 /* All Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "All Enums.swift"; sourceTree = "<group>"; };
 		F094247324861C560069B045 /* MiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleView.swift; sourceTree = "<group>"; };
 		F094247524861D150069B045 /* MoreMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMenuViewModel.swift; sourceTree = "<group>"; };
 		F094247724861D480069B045 /* MoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreModel.swift; sourceTree = "<group>"; };
@@ -94,6 +95,11 @@
 		F094249624862D310069B045 /* AppTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabs.swift; sourceTree = "<group>"; };
 		F094249A248672750069B045 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		F094249C248674270069B045 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ChatApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
+		F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+with+image.swift"; sourceTree = "<group>"; };
+		F0F623ED24875D6700D0424C /* LogIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
+		F0F623EF24875E7200D0424C /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		F0F623F124875EB100D0424C /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +120,6 @@
 				3AEE662CC2AB7DA4B94B172A /* Pods-ChatApp.debug.xcconfig */,
 				7A2740C0DD6B97C348E5837A /* Pods-ChatApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -148,12 +153,10 @@
 		F057DE67248446310071E75C /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				F0E7FB4F248779A800B03AC0 /* Supporting */,
 				F0942499248672540069B045 /* Manager */,
 				F0942498248671160069B045 /* Network */,
-				F094248624861F700069B045 /* UIKit */,
-				F094246F24860A330069B045 /* All Enums */,
 				F057DE8F24845F8A0071E75C /* ViewModel */,
-				F057DE8A24844D850071E75C /* Util */,
 				F057DE8724844CE90071E75C /* Model */,
 				F057DE7C24844C950071E75C /* View */,
 				F057DE68248446310071E75C /* AppDelegate.swift */,
@@ -217,19 +220,9 @@
 			children = (
 				F057DE8824844D370071E75C /* User.swift */,
 				F094247724861D480069B045 /* MoreModel.swift */,
+				F0F623ED24875D6700D0424C /* LogIn.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		F057DE8A24844D850071E75C /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				F057DE8B24844D9A0071E75C /* UserDefaults+extension.swift */,
-				F057DE8D24845EB00071E75C /* String+extension.swift */,
-				F094248224861E9A0069B045 /* Bundle+extension.swift */,
-				F094248424861F440069B045 /* Date+extension.swift */,
-			);
-			path = Util;
 			sourceTree = "<group>";
 		};
 		F057DE8F24845F8A0071E75C /* ViewModel */ = {
@@ -245,8 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				F057DE9724846E5A0071E75C /* Corners.swift */,
-				F094246D248606A80069B045 /* ButtonsWithImage.swift */,
-				F094248B248620430069B045 /* CustomAlerts.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -259,15 +250,6 @@
 				F057DE992484CEAF0071E75C /* MiddleBackgroundView.swift */,
 			);
 			path = Background;
-			sourceTree = "<group>";
-		};
-		F094246F24860A330069B045 /* All Enums */ = {
-			isa = PBXGroup;
-			children = (
-				F094247024860A480069B045 /* All Enums.swift */,
-				F094249624862D310069B045 /* AppTabs.swift */,
-			);
-			path = "All Enums";
 			sourceTree = "<group>";
 		};
 		F094247224861C110069B045 /* Authentication */ = {
@@ -284,6 +266,7 @@
 			children = (
 				F094248724861F870069B045 /* ActivityIndicatorView.swift */,
 				F094248924861F9C0069B045 /* SendEmailView.swift */,
+				F0F623EF24875E7200D0424C /* ImagePickerView.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -307,6 +290,7 @@
 		F0942498248671160069B045 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				F0F623F124875EB100D0424C /* Result.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -317,6 +301,38 @@
 				F094249A248672750069B045 /* FirebaseManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		F0E7FB4F248779A800B03AC0 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				F094248624861F700069B045 /* UIKit */,
+				F0E7FB51248779EA00B03AC0 /* Enums */,
+				F0E7FB50248779BA00B03AC0 /* Extentions */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		F0E7FB50248779BA00B03AC0 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				F057DE8B24844D9A0071E75C /* UserDefaults+extension.swift */,
+				F057DE8D24845EB00071E75C /* String+extension.swift */,
+				F094248224861E9A0069B045 /* Bundle+extension.swift */,
+				F094248424861F440069B045 /* Date+extension.swift */,
+			);
+			path = Extentions;
+			sourceTree = "<group>";
+		};
+		F0E7FB51248779EA00B03AC0 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				F094249624862D310069B045 /* AppTabs.swift */,
+				F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */,
+				F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */,
+				F094248B248620430069B045 /* CustomAlerts.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,11 +453,14 @@
 			files = (
 				F094247824861D480069B045 /* MoreModel.swift in Sources */,
 				F094248324861E9A0069B045 /* Bundle+extension.swift in Sources */,
+				F0F623F224875EB100D0424C /* Result.swift in Sources */,
+				F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */,
 				F094249B248672750069B045 /* FirebaseManager.swift in Sources */,
 				F057DEA42484F3FF0071E75C /* TopBackGroundView.swift in Sources */,
 				F057DE7E24844CA60071E75C /* HomeView.swift in Sources */,
 				F094249024862C060069B045 /* ChatView.swift in Sources */,
 				F057DE9C2484CF5F0071E75C /* TopView.swift in Sources */,
+				F0F623EE24875D6700D0424C /* LogIn.swift in Sources */,
 				F057DE9524846C430071E75C /* MainView.swift in Sources */,
 				F094247F24861DB40069B045 /* AppFeedbackView.swift in Sources */,
 				F094248C248620430069B045 /* CustomAlerts.swift in Sources */,
@@ -450,9 +469,11 @@
 				F094247424861C560069B045 /* MiddleView.swift in Sources */,
 				F094247D24861DA60069B045 /* DisclaimerView.swift in Sources */,
 				F057DE9324846BEC0071E75C /* TabbedView.swift in Sources */,
+				F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */,
 				F057DE9824846E5A0071E75C /* Corners.swift in Sources */,
 				F057DE8324844CC70071E75C /* RegisterView.swift in Sources */,
 				F094248524861F440069B045 /* Date+extension.swift in Sources */,
+				F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */,
 				F057DE9124845F980071E75C /* UserViewModel.swift in Sources */,
 				F094249524862C280069B045 /* CallView.swift in Sources */,
 				F057DE69248446310071E75C /* AppDelegate.swift in Sources */,
@@ -461,9 +482,7 @@
 				F057DE6B248446310071E75C /* SceneDelegate.swift in Sources */,
 				F057DEA02484ECD40071E75C /* BottomBackgroundView.swift in Sources */,
 				F094248124861DC10069B045 /* AppVersion.swift in Sources */,
-				F094246E248606A80069B045 /* ButtonsWithImage.swift in Sources */,
 				F057DE8C24844D9A0071E75C /* UserDefaults+extension.swift in Sources */,
-				F094247124860A480069B045 /* All Enums.swift in Sources */,
 				F057DE9A2484CEAF0071E75C /* MiddleBackgroundView.swift in Sources */,
 				F094248824861F870069B045 /* ActivityIndicatorView.swift in Sources */,
 				F057DE8924844D370071E75C /* User.swift in Sources */,

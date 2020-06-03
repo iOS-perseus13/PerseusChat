@@ -22,17 +22,7 @@ enum UserType: String, Codable {
     case admin
 }
 
-/*
- User login State of an user
- 1. unknown: unknown state
- 2. loggedIn: user is logged in
- 3. loggedOut: user is logged out
- */
-enum LogInState: String, Codable {
-    case unknown
-    case loggedIn
-    case loggedOut
-}
+
 /*
  User struct to store the current user
  1. name: user name
@@ -57,4 +47,11 @@ struct User: Codable{
  */
 struct UserObject: Codable{
     var user: User
+}
+// MARK:- UserProfile
+struct UserProfile{
+    var userID: String? = nil
+    var firstName: String? = nil
+    var lastName: String? = nil
+    var profileImage: UIImage? = nil
 }
