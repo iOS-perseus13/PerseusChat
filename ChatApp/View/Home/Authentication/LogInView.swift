@@ -69,9 +69,23 @@ struct LogInView: View {
                     
                     // Sign In Button
                     HStack{
-                        ButtonsWithSystemImage(systemImage: .logIn(image: CustomButtonTypes.ButtonImageType.withSystemImage), buttonLabel: "Log in")
-                            .onTapGesture {
-                                self.userViewModel.logInState = .loggedIn
+                        Button(action: {
+                            self.userViewModel.logInState = .loggedIn
+                        }) {
+                            HStack(spacing: 20){
+                                Image(systemName: CustomButtonTypes.logIn(image: CustomButtonTypes.ButtonImageType.withSystemImage).image)
+                                .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(.green)
+                                    
+                                Text("Log in")
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity, minHeight: 50)
+                            .background(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
                         }
                     }
                     Spacer()
