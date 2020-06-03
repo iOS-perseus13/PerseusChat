@@ -13,30 +13,7 @@ import Combine
 
 
 struct RegisterView: View {
-    enum Border{
-        case error
-        case normal
-        var color: Color{
-            switch self{
-            case .error: return .red
-            case .normal: return .blue
-            }
-        }
-    }
-    enum TextBoxType: Equatable{
-        case email
-        case password
-        case confirmPassword
-        
-        var placeHolder: String{
-            switch self{
-            case .password: return "Password"
-            case .confirmPassword: return "Confirm password"
-            case .email: return "Email address"
-            }
-        }
-    }
-    
+   
     @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     
@@ -53,7 +30,7 @@ struct RegisterView: View {
     var body: some View {
         NavigationView{
             VStack{
-                // Registration Button
+                // Login Stortcut Button
                 HStack {
                     Spacer()
                     Button(action: {
@@ -84,18 +61,19 @@ struct RegisterView: View {
                     // Email text box
                     TextField("Email",text:  self.$email)
                         .padding(10)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(false)
                         .overlay(RoundedRectangle(cornerRadius: 5)
                             .stroke(self.email.count > 8 && !self.email.isEmpty && !self.email.isValidEmailAddress()
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
                     )
-                        .autocapitalization(.none)
-                    
                     // password text box
                     TextField(TextBoxType.password.placeHolder.titleCase(), text: $password, onEditingChanged: { _ in
                         self.textFieldHavingError = nil
                     })
                         .padding(10)
                         .autocapitalization(.none)
+                        .disableAutocorrection(false)
                         .overlay(RoundedRectangle(cornerRadius: 5)
                             .stroke( (self.textFieldHavingError == .password) && (self.password.count < 6)
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
@@ -119,7 +97,8 @@ struct RegisterView: View {
                     })
                         .padding(10)
                         .autocapitalization(.none)
-                        .overlay(RoundedRectangle(cornerRadius: 8)
+                        .disableAutocorrection(false)
+                        .overlay(RoundedRectangle(cornerRadius: 5)
                             .stroke( (self.textFieldHavingError == .confirmPassword) && (self.confirmPassword.count < 6)
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
                             .onReceive(Just(confirmPassword)) { (newValue) in
@@ -145,6 +124,8 @@ struct RegisterView: View {
                                     switch response{
                                     case .success(let data):
                                         if let _ = data{
+                                            print("Success")
+                                            self.userViewModel.logInState = .loggedIn
                                         }
                                     case .failure(let error):
                                         let customAlertType = APPAlerts.unknownError
@@ -170,7 +151,6 @@ struct RegisterView: View {
                                                        dismissButton: customAlertType.dissmissButton)
                                 self.shouldShowAlert = true
                             }
-                           // self.userViewModel.logInState = .loggedIn
                         }) {
                             HStack(spacing: 20){
                                 Image(systemName: CustomButtonTypes.register(image: CustomButtonTypes.ButtonImageType.withSystemImage).image)
@@ -180,8 +160,8 @@ struct RegisterView: View {
                                 
                                 Text("Register")
                             }
-                            .padding()
-                            .frame(maxWidth: .infinity, minHeight: 50)
+                            .padding(10)
+                            .frame(maxWidth: .infinity)//, minHeight: 50)
                             .background(
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(Color.blue, lineWidth: 1)

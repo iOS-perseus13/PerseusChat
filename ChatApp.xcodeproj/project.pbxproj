@@ -47,6 +47,7 @@
 		F094249D248674270069B045 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094249C248674270069B045 /* GoogleService-Info.plist */; };
 		F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */; };
 		F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */; };
+		F0E7FB572487C89700B03AC0 /* TextField+border.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB562487C89700B03AC0 /* TextField+border.swift */; };
 		F0F623EE24875D6700D0424C /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623ED24875D6700D0424C /* LogIn.swift */; };
 		F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623EF24875E7200D0424C /* ImagePickerView.swift */; };
 		F0F623F224875EB100D0424C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623F124875EB100D0424C /* Result.swift */; };
@@ -97,6 +98,7 @@
 		F094249C248674270069B045 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ChatApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+with+image.swift"; sourceTree = "<group>"; };
+		F0E7FB562487C89700B03AC0 /* TextField+border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+border.swift"; sourceTree = "<group>"; };
 		F0F623ED24875D6700D0424C /* LogIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
 		F0F623EF24875E7200D0424C /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		F0F623F124875EB100D0424C /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */,
 				F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */,
 				F094248B248620430069B045 /* CustomAlerts.swift */,
+				F0E7FB562487C89700B03AC0 /* TextField+border.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				F094248A24861F9C0069B045 /* SendEmailView.swift in Sources */,
 				F057DE8624844CE20071E75C /* MoreView.swift in Sources */,
 				F094247424861C560069B045 /* MiddleView.swift in Sources */,
+				F0E7FB572487C89700B03AC0 /* TextField+border.swift in Sources */,
 				F094247D24861DA60069B045 /* DisclaimerView.swift in Sources */,
 				F057DE9324846BEC0071E75C /* TabbedView.swift in Sources */,
 				F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */,

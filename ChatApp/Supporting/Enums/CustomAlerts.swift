@@ -29,6 +29,7 @@ enum APPAlerts: String {
     case userNotRegistered
     case invalidEmailAddress
     case emailSentToResetPassword
+    case resetPasswordFailed
     case incompleteRequiredData
     case passwordError
     case userAlreadyExists
@@ -38,6 +39,7 @@ enum APPAlerts: String {
     case emailNotSet
     case profileUpdateSuccessfull
     case profileUpdateFailed
+    
     
     var title: String{
         return self.rawValue.titleCase()
@@ -56,7 +58,7 @@ enum APPAlerts: String {
     var dissmissButton: Alert.Button{
         switch self{
         case .invalidEmailAddress, .passwordError, .profileUpdateSuccessfull, .profileUpdateFailed: return .default(Text("OK"))
-        case .emailSentToResetPassword, .incompleteRequiredData: return .default(Text("OK"))
+        case .emailSentToResetPassword, .incompleteRequiredData, .resetPasswordFailed: return .default(Text("OK"))
         default: return .cancel()
         }
         
