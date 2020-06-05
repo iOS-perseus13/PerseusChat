@@ -26,39 +26,61 @@ struct APPAlertItem: Identifiable {
 
 // MARK:- APP alerts
 enum APPAlerts: String {
-    case userNotRegistered
     case invalidEmailAddress
+    case emailDomainNotPermitted
+    
+    case passwordError
+    case confirmPasswordError
+    case passwordAndConfirmPasswordShouldBeSame
+    
+    case failedToUpdateProfileImage
+    case userNotRegistered
+    
     case emailSentToResetPassword
     case resetPasswordFailed
     case incompleteRequiredData
-    case passwordError
     case userAlreadyExists
     case unknownError
     case invalidCredentials
-    case passwordAndConfirmPasswordShouldBeSame
     case emailNotSet
     case profileUpdateSuccessfull
     case profileUpdateFailed
+    case nameShouldNotBeLessThanFourCharacters
     
     
     var title: String{
-        return self.rawValue.titleCase()
+        switch self{
+        case .failedToUpdateProfileImage:
+            return "Firebase error"
+        default:
+            return self.rawValue.titleCase()
+        }
     }
     var message: String {
         switch self {
+        case .passwordError: return "Password should be at least 5 characters long"
+        case .confirmPasswordError: return "Confirm password should be at least 5 characters long"
+        case .emailDomainNotPermitted:
+            return "Please check your email domain"
         case .userNotRegistered:
             return "Please check the email address."
         case .emailSentToResetPassword:
             return "Please check your email to reset the password."
         case .incompleteRequiredData:
             return "Please check the information you provided."
+        case .nameShouldNotBeLessThanFourCharacters:
+            return "Please check your name."
+        case .invalidEmailAddress:
+            return "Please check your email address."
         default: return self.rawValue.titleCase()
         }
     }
     var dissmissButton: Alert.Button{
         switch self{
-        case .invalidEmailAddress, .passwordError, .profileUpdateSuccessfull, .profileUpdateFailed: return .default(Text("OK"))
-        case .emailSentToResetPassword, .incompleteRequiredData, .resetPasswordFailed: return .default(Text("OK"))
+        case .invalidEmailAddress, .emailDomainNotPermitted: return .default(Text("OK"))
+        case .passwordError, .confirmPasswordError, .passwordAndConfirmPasswordShouldBeSame: return .default(Text("OK"))
+        case .profileUpdateSuccessfull, .profileUpdateFailed: return .default(Text("OK"))
+        case .emailSentToResetPassword, .incompleteRequiredData, .resetPasswordFailed, .nameShouldNotBeLessThanFourCharacters: return .default(Text("OK"))
         default: return .cancel()
         }
         

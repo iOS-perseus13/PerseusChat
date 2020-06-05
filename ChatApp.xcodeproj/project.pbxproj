@@ -30,7 +30,7 @@
 		F057DEA42484F3FF0071E75C /* TopBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057DEA32484F3FF0071E75C /* TopBackGroundView.swift */; };
 		F094247424861C560069B045 /* MiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247324861C560069B045 /* MiddleView.swift */; };
 		F094247624861D150069B045 /* MoreMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247524861D150069B045 /* MoreMenuViewModel.swift */; };
-		F094247824861D480069B045 /* MoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247724861D480069B045 /* MoreModel.swift */; };
+		F094247824861D480069B045 /* MoreMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247724861D480069B045 /* MoreMenu.swift */; };
 		F094247B24861D970069B045 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247A24861D970069B045 /* AboutView.swift */; };
 		F094247D24861DA60069B045 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247C24861DA60069B045 /* DisclaimerView.swift */; };
 		F094247F24861DB40069B045 /* AppFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247E24861DB40069B045 /* AppFeedbackView.swift */; };
@@ -48,6 +48,8 @@
 		F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */; };
 		F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */; };
 		F0E7FB572487C89700B03AC0 /* TextField+border.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB562487C89700B03AC0 /* TextField+border.swift */; };
+		F0E7FB65248926EB00B03AC0 /* FirebaseModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB64248926EB00B03AC0 /* FirebaseModels.swift */; };
+		F0E7FB67248A118E00B03AC0 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB66248A118E00B03AC0 /* FirebaseViewModel.swift */; };
 		F0F623EE24875D6700D0424C /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623ED24875D6700D0424C /* LogIn.swift */; };
 		F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623EF24875E7200D0424C /* ImagePickerView.swift */; };
 		F0F623F224875EB100D0424C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F623F124875EB100D0424C /* Result.swift */; };
@@ -81,7 +83,7 @@
 		F057DEA32484F3FF0071E75C /* TopBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBackGroundView.swift; sourceTree = "<group>"; };
 		F094247324861C560069B045 /* MiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleView.swift; sourceTree = "<group>"; };
 		F094247524861D150069B045 /* MoreMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMenuViewModel.swift; sourceTree = "<group>"; };
-		F094247724861D480069B045 /* MoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreModel.swift; sourceTree = "<group>"; };
+		F094247724861D480069B045 /* MoreMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMenu.swift; sourceTree = "<group>"; };
 		F094247A24861D970069B045 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		F094247C24861DA60069B045 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		F094247E24861DB40069B045 /* AppFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeedbackView.swift; sourceTree = "<group>"; };
@@ -99,6 +101,8 @@
 		F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+with+image.swift"; sourceTree = "<group>"; };
 		F0E7FB562487C89700B03AC0 /* TextField+border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+border.swift"; sourceTree = "<group>"; };
+		F0E7FB64248926EB00B03AC0 /* FirebaseModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModels.swift; sourceTree = "<group>"; };
+		F0E7FB66248A118E00B03AC0 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		F0F623ED24875D6700D0424C /* LogIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
 		F0F623EF24875E7200D0424C /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		F0F623F124875EB100D0424C /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -221,8 +225,9 @@
 			isa = PBXGroup;
 			children = (
 				F057DE8824844D370071E75C /* User.swift */,
-				F094247724861D480069B045 /* MoreModel.swift */,
+				F094247724861D480069B045 /* MoreMenu.swift */,
 				F0F623ED24875D6700D0424C /* LogIn.swift */,
+				F0E7FB64248926EB00B03AC0 /* FirebaseModels.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -232,6 +237,7 @@
 			children = (
 				F057DE9024845F980071E75C /* UserViewModel.swift */,
 				F094247524861D150069B045 /* MoreMenuViewModel.swift */,
+				F0E7FB66248A118E00B03AC0 /* FirebaseViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -454,7 +460,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F094247824861D480069B045 /* MoreModel.swift in Sources */,
+				F094247824861D480069B045 /* MoreMenu.swift in Sources */,
 				F094248324861E9A0069B045 /* Bundle+extension.swift in Sources */,
 				F0F623F224875EB100D0424C /* Result.swift in Sources */,
 				F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */,
@@ -469,6 +475,7 @@
 				F094248C248620430069B045 /* CustomAlerts.swift in Sources */,
 				F094248A24861F9C0069B045 /* SendEmailView.swift in Sources */,
 				F057DE8624844CE20071E75C /* MoreView.swift in Sources */,
+				F0E7FB67248A118E00B03AC0 /* FirebaseViewModel.swift in Sources */,
 				F094247424861C560069B045 /* MiddleView.swift in Sources */,
 				F0E7FB572487C89700B03AC0 /* TextField+border.swift in Sources */,
 				F094247D24861DA60069B045 /* DisclaimerView.swift in Sources */,
@@ -477,6 +484,7 @@
 				F057DE9824846E5A0071E75C /* Corners.swift in Sources */,
 				F057DE8324844CC70071E75C /* RegisterView.swift in Sources */,
 				F094248524861F440069B045 /* Date+extension.swift in Sources */,
+				F0E7FB65248926EB00B03AC0 /* FirebaseModels.swift in Sources */,
 				F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */,
 				F057DE9124845F980071E75C /* UserViewModel.swift in Sources */,
 				F094249524862C280069B045 /* CallView.swift in Sources */,

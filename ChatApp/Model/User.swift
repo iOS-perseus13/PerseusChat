@@ -40,7 +40,7 @@ struct User: Codable{
     var image: String? = nil
     var currentStatus: String = ""
     var allowNotifcation: Bool = false
-    var doNotDisturb: Bool = false 
+    var doNotDisturb: Bool = false
 }
 /*
  Object to store in UserDefaults

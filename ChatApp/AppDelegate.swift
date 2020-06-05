@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 
+
+let defaultEnding: String = "perseusinternational.net"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
