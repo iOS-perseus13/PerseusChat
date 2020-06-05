@@ -9,25 +9,27 @@
 import SwiftUI
 
 enum Border{
-       case error
-       case normal
-       var color: Color{
-           switch self{
-           case .error: return .red
-           case .normal: return .blue
-           }
-       }
-   }
-   enum TextBoxType: Equatable{
-       case email
-       case password
-       case confirmPassword
-       
-       var placeHolder: String{
-           switch self{
-           case .password: return "Password"
-           case .confirmPassword: return "Confirm password"
-           case .email: return "Email address"
-           }
-       }
-   }
+    case error
+    case normal
+    var color: Color{
+        switch self{
+        case .error: return .red
+        case .normal: return .blue
+        }
+    }
+}
+enum TextBoxType: Equatable{
+    case email
+    case password
+    case confirmPassword
+    case name
+    
+    var placeHolder: String{
+        switch self{
+        case .password: return "Password"
+        case .confirmPassword: return "Confirm password"
+        case .email: return "Email address"
+        case .name: return "Your name"
+        }
+    }
+}

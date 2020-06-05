@@ -13,10 +13,12 @@ import Combine
 
 
 struct RegisterView: View {
-   
+    
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     
+    @State var name: String = ""
     @State var email: String = ""
     @State var password: String = ""
     @State var confirmPassword: String = ""
@@ -27,6 +29,11 @@ struct RegisterView: View {
     
     @State var shouldShowAlert: Bool = false
     @State var alertItem: Alert?
+    
+    @State private var showingImagePicker = false
+    @State private var inputImage: UIImage?
+    @State private var profileImage: Image?
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -44,27 +51,62 @@ struct RegisterView: View {
                 Spacer()
                 // Sample Image
                 VStack{
-                    Image(systemName: "person.badge.plus")
-                        .resizable()
-                        .padding()
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(Color.blue, lineWidth: 1)
-                    )
-                        .frame(width: 100, height: 100)
-                    // Label
-                    Text("Register yourself")
+                    Text("Register")
                         .font(.title)
                         .fontWeight(.bold)
                         .padding(.top, 35)
-                    // Email text box
-                    TextField("Email",text:  self.$email)
+                    
+                    // Avatag image
+                    HStack {
+                        Text("Profile picture")
+                            .font(.body)
+                        Spacer()
+                        
+                        // Image
+                        HStack{
+                            if self.profileImage == nil {
+                                Image(systemName: "person")
+                                    .resizable()
+                                    .frame(width: 75, height: 75)
+                                    .clipShape(Circle())
+                                    .overlay(Circle()
+                                        .stroke(Color.blue)
+                                )
+                            } else {
+                                self.profileImage?
+                                    .resizable()
+                                    .frame(width: 75, height: 75)
+                                    .clipShape(Circle())
+                                    .overlay(Circle()
+                                        .stroke(Color.blue)
+                                )
+                            }
+                            Button(action: {
+                                self.showingImagePicker = true
+                            }) {
+                                Text("Choose image")
+                            }
+                        }.onTapGesture {
+                            self.showingImagePicker = true
+                        }
+                    }
+                    
+                    // Name text Field
+                    TextField(TextBoxType.name.placeHolder.titleCase(), text:  self.$name)
                         .padding(10)
                         .autocapitalization(.none)
                         .disableAutocorrection(false)
                         .overlay(RoundedRectangle(cornerRadius: 5)
-                            .stroke(self.email.count > 8 && !self.email.isEmpty && !self.email.isValidEmailAddress()
+                            .stroke(self.textFieldHavingError == .name && self.name.count < 5
+                                ?  Border.error.color : Border.normal.color, lineWidth: 1)
+                    )
+                    // Email text box
+                    TextField(TextBoxType.email.placeHolder.titleCase(), text:  self.$email)
+                        .padding(10)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(false)
+                        .overlay(RoundedRectangle(cornerRadius: 5)
+                            .stroke(self.textFieldHavingError == .email && !self.email.contains(defaultEnding)
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
                     )
                     // password text box
@@ -75,7 +117,7 @@ struct RegisterView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(false)
                         .overlay(RoundedRectangle(cornerRadius: 5)
-                            .stroke( (self.textFieldHavingError == .password) && (self.password.count < 6)
+                            .stroke( self.textFieldHavingError == .password && self.password.count < 5
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
                             .onReceive(Just(password)) { (newValue) in
                                 if self.passwordString.count == newValue.count {
@@ -99,7 +141,7 @@ struct RegisterView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(false)
                         .overlay(RoundedRectangle(cornerRadius: 5)
-                            .stroke( (self.textFieldHavingError == .confirmPassword) && (self.confirmPassword.count < 6)
+                            .stroke( self.textFieldHavingError == .confirmPassword && self.confirmPassword.count < 5
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
                             .onReceive(Just(confirmPassword)) { (newValue) in
                                 if self.confirmPasswordString.count == newValue.count {
@@ -118,37 +160,30 @@ struct RegisterView: View {
                     // Sign Up Button
                     HStack{
                         Button(action: {
-                            let firebaseManager = FirebaseAuthManager.shared
                             if self.checkForValidInput() {
-                                firebaseManager.createUser(loginInfo: LoginInfo(email: self.email, password: self.passwordString)){ (response) in
-                                    switch response{
-                                    case .success(let data):
-                                        if let _ = data{
-                                            print("Success")
-                                            self.userViewModel.logInState = .loggedIn
+                                self.firebaseViewModel.registerUser(name: self.name, profileImage: self.inputImage, email: self.email, password: self.password) { (resutl) in
+                                    switch resutl{
+                                    case .success(let status):
+                                        switch status {
+                                        // profile image suceesfully saved
+                                        case true:
+                                            self.userViewModel.user = self.firebaseViewModel.currentUser
+                                        // profile image failed to save
+                                        case false:
+                                            self.userViewModel.user = self.firebaseViewModel.currentUser
+                                            break
                                         }
+                                        self.userViewModel.logInState = .loggedIn
+                                        self.userViewModel.user = self.firebaseViewModel.currentUser
                                     case .failure(let error):
-                                        let customAlertType = APPAlerts.unknownError
-                                        self.alertItem = Alert(title: Text(customAlertType.title),
+                                        self.alertItem = Alert(title: Text("Firebase error"),
                                                                message: Text(error.localizedDescription),
-                                                               dismissButton: customAlertType.dissmissButton)
+                                                               dismissButton: .default(Text("OK")))
                                         self.shouldShowAlert = true
                                     }
                                 }
                             }
                             else {
-                                var customAlertType = APPAlerts.unknownError
-                                switch self.textFieldHavingError {
-                                case .email:
-                                    customAlertType = .invalidEmailAddress
-                                case .password, .confirmPassword:
-                                    customAlertType = .passwordError
-                                default:
-                                    break
-                                }
-                                self.alertItem = Alert(title: Text(customAlertType.title),
-                                                       message: Text(customAlertType.message),
-                                                       dismissButton: customAlertType.dissmissButton)
                                 self.shouldShowAlert = true
                             }
                         }) {
@@ -161,45 +196,74 @@ struct RegisterView: View {
                                 Text("Register")
                             }
                             .padding(10)
-                            .frame(maxWidth: .infinity)//, minHeight: 50)
-                            .background(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.blue, lineWidth: 1)
+                                .frame(maxWidth: .infinity)//, minHeight: 50)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(Color.blue, lineWidth: 1)
                             )
                         }
                     }
                     Spacer()
                 }.padding()
                 
-            }.navigationBarTitle("Register",displayMode: .inline)
-                .alert(isPresented: self.$shouldShowAlert) {
-                    if let alertItem = self.alertItem {
-                        return alertItem
-                    } else {
-                        return Alert(title: Text("Unknown alert"))
-                    }
+            }
+            .onAppear{
+                //   self.profileImage = Image(userViewModel.)
+            }
+            .navigationBarTitle("Register",displayMode: .inline)
+            .alert(isPresented: self.$shouldShowAlert) {
+                if let alertItem = self.alertItem {
+                    return alertItem
+                } else {
+                    return Alert(title: Text("Unknown alert"))
+                }
+            }
+            .sheet(isPresented: $showingImagePicker, onDismiss: refreshProfileImage) {
+                ImagePickerView(image: self.$inputImage)
             }
         }
+    }
+    private func refreshProfileImage(){
+        self.profileImage = Image(uiImage: self.inputImage ?? UIImage())
     }
     /*
      Function to check for valid input
      */
     private func checkForValidInput()->Bool{
+        
+        let name = self.name.trimmingCharacters(in: .whitespacesAndNewlines)
         let emailAddress = self.email.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !emailAddress.isValidEmailAddress(){
-            self.textFieldHavingError = .email
+        
+        if name.count < 4 {
+            self.textFieldHavingError = .name
+            self.alertItem = APPAlerts.nameShouldNotBeLessThanFourCharacters.alert
             return false
         }
+        
+        if !emailAddress.isValidEmailAddress(){
+            self.textFieldHavingError = .email
+            self.alertItem = APPAlerts.invalidEmailAddress.alert
+            return false
+        }
+        if let domain = emailAddress.split(separator: "@").last, domain != defaultEnding{
+            self.textFieldHavingError = .email
+            self.alertItem = APPAlerts.emailDomainNotPermitted.alert
+            return false
+        }
+        
         if self.password.isEmpty {
             self.textFieldHavingError = .password
+            self.alertItem = APPAlerts.passwordError.alert
             return false
         }
         if self.confirmPassword.isEmpty{
             self.textFieldHavingError = .confirmPassword
+            self.alertItem = APPAlerts.confirmPasswordError.alert
             return false
         }
-        if self.password != self.confirmPassword {
-            self.textFieldHavingError = .password
+        if self.passwordString != self.confirmPasswordString {
+            self.textFieldHavingError = .confirmPassword
+            self.alertItem = APPAlerts.passwordAndConfirmPasswordShouldBeSame.alert
             return false
         }
         self.textFieldHavingError = nil

@@ -10,9 +10,7 @@ import SwiftUI
 import Combine
 
 struct LogInView: View {
-   
-    
-    
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     @State var email: String = ""
@@ -37,17 +35,7 @@ struct LogInView: View {
                     }
                 }.padding()
                 Spacer()
-                // Sample Image
                 VStack{
-                    Image(systemName: "person")
-                        .resizable()
-                        .padding()
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(Color.blue, lineWidth: 1)
-                    )
-                        .frame(width: 100, height: 100)
                     // Label
                     Text("Log in to your account")
                         .font(.title)
@@ -62,7 +50,7 @@ struct LogInView: View {
                             .stroke(self.email.count > 8 && !self.email.isEmpty && !self.email.isValidEmailAddress()
                                 ?  Color.red : Color.blue, lineWidth: 1)
                     )
-                        
+                    
                     // password text box
                     
                     TextField(TextBoxType.password.placeHolder.titleCase(), text: $password, onEditingChanged: { _ in
@@ -72,7 +60,7 @@ struct LogInView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(false)
                         .overlay(RoundedRectangle(cornerRadius: 5)
-                            .stroke( (self.textFieldHavingError == .password) && (self.password.count < 6)
+                            .stroke( (self.textFieldHavingError == .password) && (self.password.count < 5)
                                 ?  Border.error.color : Border.normal.color, lineWidth: 1)
                             .onReceive(Just(password)) { (newValue) in
                                 if self.passwordString.count == newValue.count {
@@ -92,33 +80,21 @@ struct LogInView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            if self.email.isValidEmailAddress(){
-                                let firebaseManager = FirebaseAuthManager.shared
-                                firebaseManager.sendPasswordReset(email: self.email) { (result) in
+                            if self.checkForValidEmail(){
+                                self.firebaseViewModel.sendPasswordResetEmail(email: self.email) { (result) in
                                     switch result{
-                                    case .success(let status):
-                                        switch status{
-                                        case true?:
-                                            let customAlert = APPAlerts.emailSentToResetPassword
-                                            self.alertItem = customAlert.alert
-                                            self.shouldShowAlert = true
-                                        case false?:
-                                            let customAlert = APPAlerts.resetPasswordFailed
-                                            self.alertItem = customAlert.alert
-                                            self.shouldShowAlert = true
-                                        case .none: break
-                                        }
-                                        break
+                                    case .success(_):
+                                        self.alertItem = APPAlerts.emailSentToResetPassword.alert
                                     case .failure(let error):
-                                        let customAlert = APPAlerts.resetPasswordFailed
-                                        self.alertItem = Alert(title: Text(customAlert.title), message: Text(error.localizedDescription), dismissButton: customAlert.dissmissButton)
-                                        self.shouldShowAlert = true
+                                        self.alertItem = Alert(title: Text("Firebase error"),
+                                                               message: Text(error.localizedDescription),
+                                                               dismissButton: .default(Text("OK")))
                                     }
+                                    self.shouldShowAlert = true
                                 }
-                                
-                            } else {
-                                let customAlert = APPAlerts.invalidEmailAddress
-                                self.alertItem = customAlert.alert
+                            }
+                            else {
+                                self.alertItem = APPAlerts.invalidEmailAddress.alert
                                 self.shouldShowAlert = true
                             }
                         }) {
@@ -131,36 +107,21 @@ struct LogInView: View {
                     // Sign In Button
                     HStack{
                         Button(action: {
-                            let firebaseManager = FirebaseAuthManager.shared
                             if self.checkForValidInput() {
-                                firebaseManager.loginUser(loginInfo: LoginInfo(email: self.email, password: self.passwordString)){ (response) in
-                                    switch response{
-                                    case .success(let data):
-                                        if let _ = data{
-                                            self.userViewModel.logInState = .loggedIn
-                                        }
+                                self.firebaseViewModel.loginUser(email: self.email, password: self.password) { (result) in
+                                    switch result{
+                                    case .success( _ ):
+                                        self.userViewModel.logInState = .loggedIn
+                                        self.userViewModel.user = self.firebaseViewModel.currentUser
                                     case .failure(let error):
-                                        let customAlertType = APPAlerts.unknownError
-                                        self.alertItem = Alert(title: Text(customAlertType.title),
+                                        self.alertItem = Alert(title: Text("Firebase error"),
                                                                message: Text(error.localizedDescription),
-                                                               dismissButton: customAlertType.dissmissButton)
+                                                               dismissButton: .default(Text("OK")))
                                         self.shouldShowAlert = true
                                     }
                                 }
                             }
                             else {
-                                var customAlertType = APPAlerts.unknownError
-                                switch self.textFieldHavingError {
-                                case .email:
-                                    customAlertType = .invalidEmailAddress
-                                case .password:
-                                    customAlertType = .passwordError
-                                default:
-                                    break
-                                }
-                                self.alertItem = Alert(title: Text(customAlertType.title),
-                                                       message: Text(customAlertType.message),
-                                                       dismissButton: customAlertType.dissmissButton)
                                 self.shouldShowAlert = true
                             }
                         }) {
@@ -173,10 +134,10 @@ struct LogInView: View {
                                 Text("Log in")
                             }
                             .padding(10)
-                            .frame(maxWidth: .infinity)//, maxHeight: 40)
-                            .background(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.blue, lineWidth: 1)
+                                .frame(maxWidth: .infinity)//, maxHeight: 40)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(Color.blue, lineWidth: 1)
                             )
                         }
                     }
@@ -194,14 +155,33 @@ struct LogInView: View {
             }
         }
     }
+    private func checkForValidEmail()->Bool{
+        let emailAddress = self.email.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !emailAddress.isValidEmailAddress(){
+            self.alertItem = APPAlerts.invalidEmailAddress.alert
+            return false
+        }
+        if let domain = emailAddress.split(separator: "@").last, domain != defaultEnding{
+            self.alertItem = APPAlerts.emailDomainNotPermitted.alert
+            return false
+        }
+        return true
+    }
     private func checkForValidInput()->Bool{
         let emailAddress = self.email.trimmingCharacters(in: .whitespacesAndNewlines)
         if !emailAddress.isValidEmailAddress(){
             self.textFieldHavingError = .email
+            self.alertItem = APPAlerts.invalidEmailAddress.alert
+            return false
+        }
+        if let domain = emailAddress.split(separator: "@").last, domain != defaultEnding{
+            self.textFieldHavingError = .email
+            self.alertItem = APPAlerts.emailDomainNotPermitted.alert
             return false
         }
         if self.password.isEmpty {
             self.textFieldHavingError = .password
+            self.alertItem = APPAlerts.passwordError.alert
             return false
         }
         self.textFieldHavingError = nil

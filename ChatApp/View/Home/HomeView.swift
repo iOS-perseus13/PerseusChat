@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @State var isUserNameEditing: Bool = false
     @State var userName: String = ""
@@ -22,43 +23,24 @@ struct HomeView: View {
                 ) {
                     HStack(spacing: 10){
                         // profile picture
-                        ProfileImageSection(image: self.userViewModel.user.image)
+                        ProfileImageSection(firebaseViewModel: self.firebaseViewModel)
                             .onTapGesture {
                                 print("Change profile picture")
                         }
                         // user name
                         VStack{
                             HStack{
-                                EditableLabel(isEditingMode: self.$isUserNameEditing, newText: self.userName, placeHolder: "Set user name")
+                                Text(userViewModel.userName)
                                 Spacer()
                             }
                             HStack{
-                                EditableLabel(isEditingMode: self.$isUserNameEditing, newText: self.userStatus, placeHolder: "Set status")
+                                Text("Status")
                                 Spacer()
                             }
                         }
                         Spacer()
-                        Button(action: {
-                            self.isUserNameEditing.toggle()
-                        }) {
-                            if !isUserNameEditing {
-                                Text("Edit")
-                            } else {
-                                Text("Done")
-                            }
-                        }
                     }
                 }
-                // settings section
-                Section(header: Text("OTHER SETTINGS"))  {
-                    Toggle(isOn: $userViewModel.user.allowNotifcation) {
-                        Text("Notifications")
-                    }
-                    Toggle(isOn: $userViewModel.user.doNotDisturb) {
-                        Text("Do not disturb")
-                    }
-                }
-                // log out section
                 Section(header:
                     EmptyView()
                 ){
@@ -66,6 +48,15 @@ struct HomeView: View {
                         LogOutSection()
                             .onTapGesture {
                                 self.userViewModel.logInState = .loggedOut
+                                self.firebaseViewModel.logoutUser { (result) in
+                                    switch result{
+                                    case .success( _):
+                                        self.userViewModel.clearData()
+                                        self.firebaseViewModel.clearData()
+                                    case .failure(let error):
+                                        print("log out falied :\(error.localizedDescription)")
+                                    }
+                                }
                         }
                     }
                 }
@@ -94,22 +85,28 @@ struct LogOutSection: View {
  Profile image section
  */
 struct ProfileImageSection: View {
-    @State var image: String?
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     var body: some View{
         VStack{
-            if self.image == nil {
+            if self.firebaseViewModel.profileImage == nil {
                 Image(systemName: "person")
                     .resizable()
+                    .frame(width: 75, height : 75)
+                    .clipShape(Circle())
+                    .overlay(Circle()
+                        .stroke(Color.blue, lineWidth: 1)
+                )
             } else {
-                Image(systemName: image!)
+                Image(uiImage: self.firebaseViewModel.profileImage!)
                     .resizable()
+                    .frame(width: 75, height : 75)
+                    .clipShape(Circle())
+                    .overlay(Circle()
+                        .stroke(Color.blue, lineWidth: 1)
+                )
             }
         }.padding()
-            .frame(width: 75, height : 75)
-            .clipShape(Circle())
-            .overlay(Circle()
-                .stroke(Color.blue, lineWidth: 1)
-        )
+        
     }
 }
 /*

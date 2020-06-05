@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @State var tabIndex: Int = 0
     var body: some View {
@@ -17,7 +18,7 @@ struct MainView: View {
             return AnyView(
                 TabView(selection: self.$tabIndex) {
                     // Home Tab
-                    HomeTab(userViewModel: self.userViewModel)
+                    HomeTab(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.home.image)
                                 .font(.title)
@@ -33,7 +34,7 @@ struct MainView: View {
                     }.tag(TabTypes.call.tabIndex)
                     
                     //Message Tab
-                    ChatTab()
+                    ChatView()
                         .tabItem {
                             Image(systemName: TabTypes.message.image)
                                 .font(.title)
@@ -50,10 +51,10 @@ struct MainView: View {
                 }
             )
         } else if self.userViewModel.viewToShow == .login{
-            return AnyView(LogInView(userViewModel: self.userViewModel))
+            return AnyView(LogInView(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel))
         }
         else {
-            return AnyView(RegisterView(userViewModel: self.userViewModel))
+            return AnyView(RegisterView(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel))
         }
     }
 }
