@@ -10,7 +10,6 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var firebaseViewModel: FirebaseViewModel
-    @ObservedObject var userViewModel: UserViewModel
     @State var isUserNameEditing: Bool = false
     @State var userName: String = ""
     @State var userStatus: String = ""
@@ -30,13 +29,13 @@ struct HomeView: View {
                         // user name
                         VStack{
                             HStack{
-                                Text(userViewModel.userName)
+                                Text(firebaseViewModel.currentUser?.name ?? "")
                                 Spacer()
                             }
-                            HStack{
-                                Text("Status")
-                                Spacer()
-                            }
+//                            HStack{
+//                                Text("Status")
+//                                Spacer()
+//                            }
                         }
                         Spacer()
                     }
@@ -47,23 +46,15 @@ struct HomeView: View {
                     HStack{
                         LogOutSection()
                             .onTapGesture {
-                                self.userViewModel.logInState = .loggedOut
-                                self.firebaseViewModel.logoutUser { (result) in
-                                    switch result{
-                                    case .success( _):
-                                        self.userViewModel.clearData()
-                                        self.firebaseViewModel.clearData()
-                                    case .failure(let error):
-                                        print("log out falied :\(error.localizedDescription)")
-                                    }
-                                }
+//                                self.firebaseViewModel.logoutUser { (_) in
+//                                    self.firebaseViewModel.clearData()
+//                                }
                         }
                     }
                 }
             }
             .navigationBarTitle("User settings", displayMode: .inline)
         }.padding()
-        
     }
 }
 

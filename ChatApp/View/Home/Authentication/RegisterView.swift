@@ -15,7 +15,6 @@ import Combine
 struct RegisterView: View {
     
     @ObservedObject var firebaseViewModel: FirebaseViewModel
-    @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     
     @State var name: String = ""
@@ -41,7 +40,7 @@ struct RegisterView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        self.userViewModel.viewToShow = AuthenticationViewTypes.login
+                        self.firebaseViewModel.viewToShow = AuthenticationViewTypes.login
                     }) {
                         Text("Log in")
                             .font(.footnote)
@@ -162,22 +161,12 @@ struct RegisterView: View {
                         Button(action: {
                             if self.checkForValidInput() {
                                 self.firebaseViewModel.registerUser(name: self.name, profileImage: self.inputImage, email: self.email, password: self.password) { (resutl) in
-                                    switch resutl{
-                                    case .success(let status):
-                                        switch status {
-                                        // profile image suceesfully saved
-                                        case true:
-                                            self.userViewModel.user = self.firebaseViewModel.currentUser
-                                        // profile image failed to save
-                                        case false:
-                                            self.userViewModel.user = self.firebaseViewModel.currentUser
-                                            break
-                                        }
-                                        self.userViewModel.logInState = .loggedIn
-                                        self.userViewModel.user = self.firebaseViewModel.currentUser
-                                    case .failure(let error):
+                                    switch resutl {
+                                    case true:
+                                        self.firebaseViewModel.loadUsers()
+                                    case false:
                                         self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text(error.localizedDescription),
+                                                               message: Text("\( self.firebaseViewModel.error?.localizedDescription ?? "unknown error")"),
                                                                dismissButton: .default(Text("OK")))
                                         self.shouldShowAlert = true
                                     }

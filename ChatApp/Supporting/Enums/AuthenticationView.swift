@@ -9,4 +9,5 @@
 enum AuthenticationViewTypes{
     case login
     case register
+    case unknown
 }

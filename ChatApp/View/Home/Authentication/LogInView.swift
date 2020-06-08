@@ -11,7 +11,6 @@ import Combine
 
 struct LogInView: View {
     @ObservedObject var firebaseViewModel: FirebaseViewModel
-    @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     @State var email: String = ""
     @State var password: String = ""
@@ -27,7 +26,7 @@ struct LogInView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        self.userViewModel.viewToShow = AuthenticationViewTypes.register
+                        self.firebaseViewModel.viewToShow = AuthenticationViewTypes.register
                     }) {
                         Text("Register")
                             .font(.footnote)
@@ -80,7 +79,7 @@ struct LogInView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            if self.checkForValidEmail(){
+                            if self.checkForValidCustomizedEmail(){
                                 self.firebaseViewModel.sendPasswordResetEmail(email: self.email) { (result) in
                                     switch result{
                                     case .success(_):
@@ -110,12 +109,11 @@ struct LogInView: View {
                             if self.checkForValidInput() {
                                 self.firebaseViewModel.loginUser(email: self.email, password: self.password) { (result) in
                                     switch result{
-                                    case .success( _ ):
-                                        self.userViewModel.logInState = .loggedIn
-                                        self.userViewModel.user = self.firebaseViewModel.currentUser
-                                    case .failure(let error):
+                                    case true:
+                                        self.firebaseViewModel.loadUsers()
+                                    case false:
                                         self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text(error.localizedDescription),
+                                                               message: Text("\( self.firebaseViewModel.error?.localizedDescription ?? "unknown error")"),
                                                                dismissButton: .default(Text("OK")))
                                         self.shouldShowAlert = true
                                     }
@@ -155,7 +153,7 @@ struct LogInView: View {
             }
         }
     }
-    private func checkForValidEmail()->Bool{
+    private func checkForValidCustomizedEmail()->Bool{
         let emailAddress = self.email.trimmingCharacters(in: .whitespacesAndNewlines)
         if !emailAddress.isValidEmailAddress(){
             self.alertItem = APPAlerts.invalidEmailAddress.alert

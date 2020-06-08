@@ -28,25 +28,25 @@ enum FireBaseError: Error{
     }
 }
 protocol FireBaseManagerType: class {
-//    func isUserExists(email: String, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
-//    func sendPasswordReset(email: String, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
-//    func createUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
-//    func loginUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
-//    func loadUserProfile(userID: String, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
-//    func saveUserProfile(userID: String, userProfile: UserProfile, completion: @escaping(Result<Bool?,FireBaseError>)->Void)
-//    func saveProfileImage(userID: String, profileImage: UIImage?, completion: @escaping (Result<String?, FireBaseError>)->Void)
-//    func loadProfileImage(userID: String, completion: @escaping (Result<UIImage?, FireBaseError>)->Void)
-//    func updateLocation(forUser userID: String, location:CLLocation, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
-//
+    //    func isUserExists(email: String, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
+    //    func sendPasswordReset(email: String, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
+    //    func createUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
+    //    func loginUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
+    //    func loadUserProfile(userID: String, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
+    //    func saveUserProfile(userID: String, userProfile: UserProfile, completion: @escaping(Result<Bool?,FireBaseError>)->Void)
+    //    func saveProfileImage(userID: String, profileImage: UIImage?, completion: @escaping (Result<String?, FireBaseError>)->Void)
+    //    func loadProfileImage(userID: String, completion: @escaping (Result<UIImage?, FireBaseError>)->Void)
+    //    func updateLocation(forUser userID: String, location:CLLocation, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
+    //
     // Message
-//    func sendMessage(){
-//    
-//    }
-//    
-//    // Chatroom
-//    func createChatRoom(){
-//    
-//    }
+    //    func sendMessage(){
+    //
+    //    }
+    //
+    //    // Chatroom
+    //    func createChatRoom(){
+    //
+    //    }
 }
 
 class FirebaseAuthManager: ObservableObject{
@@ -256,3 +256,4 @@ class FirebaseAuthManager: ObservableObject{
 //    }
 //}
 //
+

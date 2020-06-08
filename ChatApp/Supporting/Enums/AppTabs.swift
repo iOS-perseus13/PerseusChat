@@ -59,31 +59,9 @@ enum TabColor {
     }
 }
 
-struct HomeTab: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
-    @ObservedObject var userViewModel: UserViewModel
-    var body: some View {
-        HomeView(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel)
-    }
-}
-
-struct ChatTab: View {
-    var body: some View {
-        ChatView()
-    }
-}
-
-
 struct CallTab: View {
     var body: some View {
         Text("Call Tab")
     }
 }
 
-
-struct MoreTab: View {
-    @ObservedObject var userViewModel: UserViewModel
-    var body: some View {
-        MoreView()
-    }
-}

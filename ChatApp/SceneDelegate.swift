@@ -21,20 +21,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view that provides the window contents.
         var mainView: AnyView
-        
-        
-        let userViewModel = UserViewModel()
         let firebaseViewModel = FirebaseViewModel()
         
-        switch firebaseViewModel.isLogedIn{
-        case true:
-            userViewModel.logInState = .loggedIn
-            userViewModel.user = firebaseViewModel.currentUser
-        case false:
-            userViewModel.logInState = .unknown
+        firebaseViewModel.loadUserProfile { (result) in
+            switch result {
+            case true:
+                firebaseViewModel.isLogedIn = true
+            case false:
+                firebaseViewModel.isLogedIn = false
+                firebaseViewModel.viewToShow = .login
+            }
         }
-        
-        mainView = AnyView( MainView(firebaseViewModel: firebaseViewModel, userViewModel: userViewModel))
+        mainView = AnyView( MainView(firebaseViewModel: firebaseViewModel))
         
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)

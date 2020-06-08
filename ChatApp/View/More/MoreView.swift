@@ -9,11 +9,8 @@
 import SwiftUI
 
 struct MoreView: View {
-  //  @ObservedObject var userViewModel: UserViewModel
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @State var list: [MoreListSection] = []
-//    @State var isUserLoggedIn: Bool?
-//    @State var userType: UserType?
-    
     
     var body: some View {
         NavigationView{
@@ -21,7 +18,7 @@ struct MoreView: View {
                 ForEach(list) { item in
                     Section(header: Text(item.title.rawValue.titleCase()).bold().frame(height: 50)) {
                         ForEach(item.rows, id: \.id) { row in
-                            MoreListItemView(row: row)
+                            MoreListItemView(firebaseViewModel: self.firebaseViewModel, row: row)
                         }
                     }
                 }.navigationBarTitle(Text("More").bold(),displayMode: .inline)
@@ -44,6 +41,7 @@ struct MoreView: View {
 }
 
 struct MoreListItemView: View {
+    @ObservedObject var firebaseViewModel: FirebaseViewModel
     var row: MoreListRow
     var body: some View {
         VStack{
@@ -56,7 +54,9 @@ struct MoreListItemView: View {
                 Text(row.title.rawValue.titleCase())
                     .foregroundColor(row.title.textColor)
                     .onTapGesture {
-                    print("handle log out")
+//                        self.firebaseViewModel.logoutUser { (_) in
+//                            self.firebaseViewModel.clearData()
+//                        }
                 }
             }
         }

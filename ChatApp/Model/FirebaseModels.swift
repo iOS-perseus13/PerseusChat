@@ -8,10 +8,12 @@
 
 import SwiftUI
 
-struct FirebaseUser{
-    var id: String
-    var email: String
-    var name: String
+struct FirebaseUser: Codable, Hashable{
+    var id: String = ""
+    var email: String = ""
+    var name: String = ""
+    var profileImageURL: String?
+    var loginState: Bool = false 
 }
 
 struct FirebaseMessage{
@@ -24,12 +26,19 @@ struct FirebaseMessage{
 }
 
 
-struct FirebaseChatRoom {
+struct FirebaseChatRoom : Hashable {
     var id: String
     var name: String
+    var admin: String
 }
 
 struct FirebaseUserProfile{
     var user: FirebaseUser
     var avatar: UIImage
 }
+
+enum FirebaseChatRoomType: String {
+    case groupChat
+    case individualChat
+}
+

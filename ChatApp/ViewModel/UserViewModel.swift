@@ -10,26 +10,23 @@ import Firebase
 
 class UserViewModel: ObservableObject {
     @Published var logInState: LogInState = .unknown
-    @Published var user: Firebase.User?
+    @Published var user: FirebaseUser?
     @Published var viewToShow: AuthenticationViewTypes = .login
-    init(){    
-//        if let user = UserDefaults.standard.loadUser() {
-//            self.logInState = .loggedIn
-//            self.user = user
-//        } else {
-//            self.logInState = .unknown
-//            self.user = User()
-//        }
+    @Published var chatrooms: [FirebaseChatRoom] = []
+    @Published var messages: [FirebaseMessage] = []
+    init(){
+        
     }
-    func saveUserProfile(user: Firebase.User?){
+    func saveUserProfile(user: FirebaseUser?){
         self.user = user
+        self.logInState = (user?.loginState ?? false) ? .loggedIn : .unknown
     }
     
     var userName: String {
-        return user?.displayName ?? user?.email ?? "not set yet"
+        return user?.name ?? user?.email ?? "not set yet"
     }
     var profilePic: String?{
-        return user?.photoURL?.absoluteString
+        return user?.profileImageURL
     }
         
     func clearData(){

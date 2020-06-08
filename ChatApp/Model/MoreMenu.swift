@@ -27,21 +27,9 @@ struct MoreListSection: Identifiable{
                 //.init(title: .disclaimer, targetView: AnyView(DisclaimerView()))
             ]
         case .myAccount:
-            if let _ = UserDefaults.standard.loadUser() {
                 return [
-                    .init(title: .logout, shouldNavigate: false),
-               //     .init(title: .manageProfile,targetView: AnyView(ProfileView()))
+                    .init(title: .logout, shouldNavigate: false)
                 ]
-            } else {
-                return [
-                    .init(title: .login),
-                    .init(title: .register)
-
-                
-                    //.init(title: .login)// targetView : AnyView(LogInView())),
-                    //.init(title: .register)//, targetView : AnyView(RegisterView()))
-                ]
-            }
         case .adminMenu:
 //            if UserDefaults.standard.getUserType() == .owner || UserDefaults.standard.getUserType() == .superUser {
 //                return [

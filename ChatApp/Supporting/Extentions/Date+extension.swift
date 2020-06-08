@@ -13,4 +13,20 @@ extension Date{
         let calender = Calendar.current
         return "\(calender.component(.year, from: date))"
     }
+
+   struct Formatter {
+       static let utcFormatter: DateFormatter = {
+           let dateFormatter = DateFormatter()
+ 
+           dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss'Z'"
+           dateFormatter.timeZone = TimeZone(identifier: "GMT")
+ 
+           return dateFormatter
+       }()
+   }
+ 
+   var dateToUTC: String {
+       return Formatter.utcFormatter.string(from: self)
+   }
 }
+ 
