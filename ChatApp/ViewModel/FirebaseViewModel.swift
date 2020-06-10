@@ -9,7 +9,6 @@
 import SwiftUI
 import Firebase
 
-
 protocol FirebaseOperations{
     func fetchUserProfile(withUserId userID: String, completion: @escaping (FirebaseUser?)->Void )
     func registerUser(name: String, profileImage: UIImage?, email: String, password: String, completion: @escaping (Bool) -> Void)
@@ -19,6 +18,7 @@ protocol FirebaseOperations{
     // func createChatRoom(chatRoomName: String, completion: @escaping (Result<Bool, Error>)->Void)
     func loadUsers()
     func loadUserProfile(completion: @escaping(Bool)->Void)
+    func sendMessage(message: [String: Any], completion: @escaping(Bool)->Void)
 }
 
 class FirebaseViewModel: ObservableObject {
@@ -27,6 +27,7 @@ class FirebaseViewModel: ObservableObject {
     @Published var profileImage: UIImage?
     @Published var chatRooms: [FirebaseChatRoom] = []
     @Published var users: [FirebaseUser] = []
+    @Published var messages: [FirebaseMessage] = []
     @Published var error: Error?
     @Published var currentUser: FirebaseUser?
     private var listner: ListenerRegistration? = nil
@@ -75,7 +76,7 @@ class FirebaseViewModel: ObservableObject {
                     print("Current user login State: \(user.loginState)")
                     self.isLogedIn = user.loginState
                     DispatchQueue.main.async {
-                        self.loadProfileImage()
+                        //   self.loadProfileImage()
                         self.loadUsers()
                     }
                     completion(true)
@@ -186,6 +187,51 @@ class FirebaseViewModel: ObservableObject {
             }
         }
     }
+    // get user from UserID
+    func getUser(userID: String)->FirebaseUser? {
+        var firebaseUser: FirebaseUser?
+        if let user = self.users.first(where: { $0.id == userID }) {
+            firebaseUser = user
+        }
+        return firebaseUser
+    }
+    // get ChatRoom from roomID
+    func getChatRoom(roomID: String?)->FirebaseChatRoom? {
+        var firebaseChatRoom: FirebaseChatRoom?
+        if let chatRoom = self.chatRooms.first(where: { $0.id == roomID }) {
+            firebaseChatRoom = chatRoom
+        }
+        return firebaseChatRoom
+    }
+    // get Message from MessageID
+    func getMessage(messageID: String)->FirebaseMessage? {
+        var firebaseMessage: FirebaseMessage?
+        if let message = self.messages.first(where: { $0.id == messageID }) {
+            firebaseMessage = message
+        }
+        return firebaseMessage
+    }
+    func getLastMessage(senderID: String)->FirebaseMessage? {
+        var firebaseMessage: FirebaseMessage?
+        if let message = self.messages.first(where: { $0.fromUserId == senderID && $0.toUserId == self.currentUser?.id }) {
+            firebaseMessage = message
+        }
+        return firebaseMessage
+    }
+    func getMessages(roomID: String, roomType: FirebaseChatRoomType)->[FirebaseMessage]{
+        var firebaseMessages: [FirebaseMessage] = []
+        switch roomType {
+        case .individualChat:
+            let messages = self.messages.filter({ $0.roomId == nil})
+                .filter({
+                    Set(arrayLiteral: $0.fromUserId, $0.toUserId) == Set(arrayLiteral: self.currentUser?.id, roomID)})
+            firebaseMessages = messages
+        case .groupChat:
+            let messages = self.messages.filter({$0.roomId == roomID})
+            firebaseMessages = messages
+        }
+        return firebaseMessages
+    }
 }
 
 extension FirebaseViewModel: FirebaseOperations {
@@ -229,7 +275,7 @@ extension FirebaseViewModel: FirebaseOperations {
                 ]
                 let fireStore = Firestore.firestore()
                 let docRef = fireStore.collection("userProfiles").document(userID)
-            
+                
                 docRef.setData(userProfile) { (error) in
                     print("User Profile: \(userProfile)")
                     if let error = error {
@@ -243,7 +289,6 @@ extension FirebaseViewModel: FirebaseOperations {
         }
         catch (let err){
             print("Logout failed: \(err.localizedDescription)")
-            //self.listner?.remove()
             self.error = err
             self.isLogedIn = false
             self.viewToShow = .login
@@ -279,33 +324,30 @@ extension FirebaseViewModel: FirebaseOperations {
             }
         }
     }
+    func sendMessage(message: [String: Any], completion: @escaping(Bool)->Void){
+        guard let userID = self.currentUser?.id, !userID.isEmpty else {
+            self.error = FireBaseError.other(message: "Failed to load current user")
+            completion(false)
+            return
+        }
+        let database = Firestore.firestore()
+        var messageDictionary = message
+        messageDictionary["fromUserId"] = userID
+        messageDictionary["createdTime"] = Int(Date().timeIntervalSince1970)
+        messageDictionary["readStatus"] = false
+        messageDictionary["sequenceNumner"] = self.messages.count
+        database.collection("messages").addDocument(data: messageDictionary) { (error) in
+            if let error = error{
+                self.error = error
+                completion(false)
+            }
+            completion(true)
+        }
+    }
     
-    //    func createChatRoom(chatRoomName: String, completion: @escaping (Result<Bool, Error>)->Void){
-    //        if let userID = self.currentUser?.uid, !self.chatRooms.contains(where: {$0.name != chatRoomName}) {
-    //            let db = Firestore.firestore()
-    //            let date = Date().timeIntervalSince1970
-    //            let chatRoomDictionary: [String: Any] =
-    //                [
-    //                    "name" : chatRoomName,
-    //                    "admin": userID,
-    //                    "created": date
-    //            ]
-    //            var docRef: DocumentReference? = nil
-    //            docRef = db.collection("chatRooms").addDocument(data: chatRoomDictionary) { (error) in
-    //                if let error = error {
-    //                    completion(.failure(error))
-    //                } else {
-    //                    if let id = docRef?.documentID {
-    //                        let chatRoom = FirebaseChatRoom(id: id, name: chatRoomName, admin: userID)
-    //                        self.chatRooms.append(chatRoom)
-    //                    }
-    //                    completion(.success(true))
-    //                }
-    //            }
-    //        }
-    //    }
+    
     func loadUsers() {
-        self.users.removeAll()
+        //self.users.removeAll()
         let database = Firestore.firestore()
         self.listner = database.collection("userProfiles").addSnapshotListener { (snapShot, error) in
             if let error = error {
@@ -317,7 +359,9 @@ extension FirebaseViewModel: FirebaseOperations {
                     if let data = try? JSONSerialization.data(withJSONObject: dict, options: []) {
                         do {
                             let genericModel = try JSONDecoder().decode(FirebaseUser.self, from: data)
-                            users.append(genericModel)
+                            if let userID = self.currentUser?.id, genericModel.id != userID {
+                                users.append(genericModel)
+                            }
                         }
                         catch (let error) {
                             print("Error .......: \(error.localizedDescription)")
@@ -331,8 +375,43 @@ extension FirebaseViewModel: FirebaseOperations {
                     self.isLogedIn = false
                     self.viewToShow = .register
                 }
+                else {
+                    self.isLogedIn = true
+                }
                 print("Now user count: \(self.users.count)")
             }
         }
     }
+    
+    
+    func loadMessages() {
+       // self.messages.removeAll()
+        let database = Firestore.firestore()
+        self.listner = database.collection("messages").addSnapshotListener { (snapShot, error) in
+            if let error = error {
+                print("Error loading messages: \(error.localizedDescription)")
+            } else if let snapShot = snapShot {
+                var messages : [FirebaseMessage] = []
+                for document in snapShot.documents {
+                    let dict = document.data()
+                    if let data = try? JSONSerialization.data(withJSONObject: dict, options: []) {
+                        do {
+                            var genericModel = try JSONDecoder().decode(FirebaseMessage.self, from: data)
+                            genericModel.id = document.documentID
+                            messages.append(genericModel)
+                        }
+                        catch (let error) {
+                            print("Error .......: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                messages.sort {
+                    $0.sequenceNumner < $1.sequenceNumner
+                }
+                self.messages = messages
+                print("Now Messages count: \(self.messages.count)")
+            }
+        }
+    }
+    
 }

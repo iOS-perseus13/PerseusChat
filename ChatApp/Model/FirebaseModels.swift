@@ -13,28 +13,30 @@ struct FirebaseUser: Codable, Hashable{
     var email: String = ""
     var name: String = ""
     var profileImageURL: String?
-    var loginState: Bool = false 
+    var loginState: Bool = false
 }
 
-struct FirebaseMessage{
-    var id: String
-    var body: String
-    var fromUserId: String
-    var toUserId: String
-    var roomId: String
-    var createdTime: Int
+struct FirebaseMessage: Codable, Hashable{
+    var id: String?
+    var body: String = ""
+    var fromUserId: String = ""
+    var toUserId: String?
+    var roomId: String?
+    var createdTime: Int = 0
+    var readStatus: Bool = false
+    var sequenceNumner: Int = 0
 }
 
 
-struct FirebaseChatRoom : Hashable {
+struct FirebaseChatRoom : Hashable, Equatable {
+    static func == (lhs: FirebaseChatRoom, rhs: FirebaseChatRoom) -> Bool {
+        rhs.lastMessage?.createdTime == rhs.lastMessage?.createdTime
+    }
+    
     var id: String
     var name: String
     var admin: String
-}
-
-struct FirebaseUserProfile{
-    var user: FirebaseUser
-    var avatar: UIImage
+    var lastMessage: FirebaseMessage?
 }
 
 enum FirebaseChatRoomType: String {

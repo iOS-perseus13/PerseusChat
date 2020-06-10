@@ -160,6 +160,7 @@ struct RegisterView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
+                                self.firebaseViewModel.viewToShow = .unknown
                                 self.firebaseViewModel.registerUser(name: self.name, profileImage: self.inputImage, email: self.email, password: self.password) { (resutl) in
                                     switch resutl {
                                     case true:

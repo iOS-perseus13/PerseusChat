@@ -12,10 +12,29 @@ struct ChatView: View {
     @ObservedObject var firebaseViewModel: FirebaseViewModel
     var body: some View {
         NavigationView{
-            VStack{
-                ChatRoomView(firebaseViewModel: self.firebaseViewModel)
+            Form{
+                // For group chats
+                Section(
+                    header: ChatRoomHeader(firebaseViewModel: self.firebaseViewModel, chatRoomType: .groupChat),
+                    footer: ChatRoomFooter(firebaseViewModel: self.firebaseViewModel, chatRoomType: .groupChat)
+                ) {
+                    ChannelListView(firebaseViewModel: self.firebaseViewModel)
+                }
+                
+                // For individual users
+                Section(
+                    header: ChatRoomHeader(firebaseViewModel: self.firebaseViewModel, chatRoomType: .individualChat),
+                    footer: ChatRoomFooter(firebaseViewModel: self.firebaseViewModel, chatRoomType: .individualChat)
+                ) {
+                    UsersListView(firebaseViewModel: self.firebaseViewModel)
+                }
             }
             .navigationBarTitle("Chat")
         }
+        .onAppear{
+            self.firebaseViewModel.loadMessages()
+        }
     }
 }
+
+

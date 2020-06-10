@@ -22,7 +22,12 @@ struct HomeView: View {
                 ) {
                     HStack(spacing: 10){
                         // profile picture
-                        ProfileImageSection(firebaseViewModel: self.firebaseViewModel)
+                        FirebaseImage(userID: self.firebaseViewModel.currentUser?.id)
+                            .frame(width: 75, height: 75)
+                            .clipShape(Circle())
+                            .overlay(Circle()
+                                .stroke(Color.blue, lineWidth: 1)
+                        )
                             .onTapGesture {
                                 print("Change profile picture")
                         }
@@ -32,10 +37,10 @@ struct HomeView: View {
                                 Text(firebaseViewModel.currentUser?.name ?? "")
                                 Spacer()
                             }
-//                            HStack{
-//                                Text("Status")
-//                                Spacer()
-//                            }
+                            //                            HStack{
+                            //                                Text("Status")
+                            //                                Spacer()
+                            //                            }
                         }
                         Spacer()
                     }
@@ -46,9 +51,9 @@ struct HomeView: View {
                     HStack{
                         LogOutSection()
                             .onTapGesture {
-//                                self.firebaseViewModel.logoutUser { (_) in
-//                                    self.firebaseViewModel.clearData()
-//                                }
+                                //                                self.firebaseViewModel.logoutUser { (_) in
+                                //                                    self.firebaseViewModel.clearData()
+                                //                                }
                         }
                     }
                 }
@@ -70,34 +75,6 @@ struct LogOutSection: View {
                 .fontWeight(.semibold)
                 .foregroundColor(.red)
         }
-    }
-}
-/*
- Profile image section
- */
-struct ProfileImageSection: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
-    var body: some View{
-        VStack{
-            if self.firebaseViewModel.profileImage == nil {
-                Image(systemName: "person")
-                    .resizable()
-                    .frame(width: 75, height : 75)
-                    .clipShape(Circle())
-                    .overlay(Circle()
-                        .stroke(Color.blue, lineWidth: 1)
-                )
-            } else {
-                Image(uiImage: self.firebaseViewModel.profileImage!)
-                    .resizable()
-                    .frame(width: 75, height : 75)
-                    .clipShape(Circle())
-                    .overlay(Circle()
-                        .stroke(Color.blue, lineWidth: 1)
-                )
-            }
-        }.padding()
-        
     }
 }
 /*

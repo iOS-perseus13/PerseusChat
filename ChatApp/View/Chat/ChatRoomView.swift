@@ -12,6 +12,10 @@ struct ChatRoomView: View {
     @ObservedObject var firebaseViewModel: FirebaseViewModel
     @State var users: [FirebaseUser] = []
     var body: some View {
+        
+        
+        
+        
         Form {
             Section(
                 header: GroupChatHeader(firebaseViewModel: self.firebaseViewModel, chatRoomType: .groupChat)
@@ -27,7 +31,9 @@ struct ChatRoomView: View {
             ) {
                 List{
                     ForEach(self.firebaseViewModel.users, id: \.self){ item in
-                        Text(item.name)
+                        NavigationLink(destination: ChatRoomDetailsView(roomName: item.name)){
+                            Text(item.name)
+                        }
                     }
                 }
                 
