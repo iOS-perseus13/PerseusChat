@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 struct LogInView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     @State var email: String = ""
     @State var password: String = ""
@@ -26,7 +26,7 @@ struct LogInView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        self.firebaseViewModel.viewToShow = AuthenticationViewTypes.register
+                        self.userViewModel.viewToShow = AuthenticationViewTypes.register
                     }) {
                         Text("Register")
                             .font(.footnote)
@@ -79,18 +79,7 @@ struct LogInView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            if self.checkForValidCustomizedEmail(){
-                                self.firebaseViewModel.sendPasswordResetEmail(email: self.email) { (result) in
-                                    switch result{
-                                    case .success(_):
-                                        self.alertItem = APPAlerts.emailSentToResetPassword.alert
-                                    case .failure(let error):
-                                        self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text(error.localizedDescription),
-                                                               dismissButton: .default(Text("OK")))
-                                    }
-                                    self.shouldShowAlert = true
-                                }
+                            if self.email.isValidEmailAddress(){
                             }
                             else {
                                 self.alertItem = APPAlerts.invalidEmailAddress.alert
@@ -107,17 +96,18 @@ struct LogInView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
-                                self.firebaseViewModel.loginUser(email: self.email, password: self.password) { (result) in
-                                    switch result{
+                                self.userViewModel.logInState = .notDetermined
+                                self.userViewModel.logIn(email: self.email, password: self.password) { (status) in
+                                    switch status{
                                     case true:
-                                        self.firebaseViewModel.loadUsers()
+                                        self.shouldShowAlert = false
+                                        self.userViewModel.logInState = .loggedIn
+                                        //self.userViewModel.viewToShow = .home
                                     case false:
-                                        self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text("\( self.firebaseViewModel.error?.localizedDescription ?? "unknown error")"),
-                                                               dismissButton: .default(Text("OK")))
                                         self.shouldShowAlert = true
                                     }
                                 }
+                                
                             }
                             else {
                                 self.shouldShowAlert = true

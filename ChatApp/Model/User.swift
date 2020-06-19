@@ -31,6 +31,7 @@ enum UserType: String, Codable {
  4. loggedInSince: timestamp UTC time (from 1970)
  5. loggedInState: user's logged in state
  */
+
 //struct User: Codable{
 //    var name: String = ""
 //    var email: String = ""
@@ -48,6 +49,25 @@ enum UserType: String, Codable {
 //struct UserObject: Codable{
 //    var user: User
 //}
+
+struct User: Codable{
+    var name: String = ""
+    var email: String = ""
+    var userType: UserType = .normal
+    var loggInSince: Int = -1
+    var logInState: LogInState = .notDetermined
+    var image: String? = nil
+    var currentStatus: String = ""
+    var allowNotifcation: Bool = false
+    var doNotDisturb: Bool = false
+}
+/*
+ Object to store in UserDefaults
+ */
+struct UserObject: Codable{
+    var user: User
+}
+
 // MARK:- UserProfile
 struct UserProfile{
     var userID: String? = nil

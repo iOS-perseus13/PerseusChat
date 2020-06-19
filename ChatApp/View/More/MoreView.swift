@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MoreView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     @State var list: [MoreListSection] = []
     
     var body: some View {
@@ -18,7 +18,7 @@ struct MoreView: View {
                 ForEach(list) { item in
                     Section(header: Text(item.title.rawValue.titleCase()).bold().frame(height: 50)) {
                         ForEach(item.rows, id: \.id) { row in
-                            MoreListItemView(firebaseViewModel: self.firebaseViewModel, row: row)
+                            MoreListItemView(userViewModel: self.userViewModel, row: row)
                         }
                     }
                 }.navigationBarTitle(Text("More").bold(),displayMode: .inline)
@@ -29,19 +29,19 @@ struct MoreView: View {
         }
     }
     private func createMoreList()->[MoreListSection]{
-        let myAccountSection = MoreListSection(title: .myAccount)
+       // let myAccountSection = MoreListSection(title: .myAccount)
         let adminSection = MoreListSection(title: .adminMenu)
         let aboutMyApp = MoreListSection(title: .about)
         if adminSection.rows.isEmpty {
-            return [myAccountSection, aboutMyApp]
+            return [aboutMyApp]
         } else {
-            return [myAccountSection, adminSection, aboutMyApp]
+            return [adminSection, aboutMyApp]
         }
     }
 }
 
 struct MoreListItemView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     var row: MoreListRow
     var body: some View {
         VStack{

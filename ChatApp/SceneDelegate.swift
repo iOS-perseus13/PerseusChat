@@ -20,20 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        var mainView: AnyView
-        let firebaseViewModel = FirebaseViewModel()
-        
-        firebaseViewModel.loadUserProfile { (result) in
-            switch result {
-            case true:
-                firebaseViewModel.isLogedIn = true
-            case false:
-                firebaseViewModel.isLogedIn = false
-                firebaseViewModel.viewToShow = .login
-            }
-        }
-        mainView = AnyView( MainView(firebaseViewModel: firebaseViewModel))
-        
+
+        let userViewModel = UserViewModel()
+        userViewModel.checkForCachedUser()
+        let mainView = MainView(userViewModel: userViewModel, tabIndex: 0)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: mainView)

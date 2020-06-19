@@ -13,8 +13,7 @@ import Combine
 
 
 struct RegisterView: View {
-    
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     
     @State var name: String = ""
@@ -40,7 +39,7 @@ struct RegisterView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        self.firebaseViewModel.viewToShow = AuthenticationViewTypes.login
+                        self.userViewModel.viewToShow = AuthenticationViewTypes.login
                     }) {
                         Text("Log in")
                             .font(.footnote)
@@ -160,14 +159,14 @@ struct RegisterView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
-                                self.firebaseViewModel.registerUser(name: self.name, profileImage: self.inputImage, email: self.email, password: self.password) { (resutl) in
-                                    switch resutl {
+                                self.userViewModel.logInState = .notDetermined
+                                self.userViewModel.register(name: self.name, profileImage: self.inputImage?.jpegData(compressionQuality: 0.25), email: self.email, password: self.password) { (status) in
+                                    switch status{
                                     case true:
-                                        self.firebaseViewModel.loadUsers()
+                                        self.shouldShowAlert = false
+                                        self.userViewModel.logInState = .loggedIn
+                                        self.userViewModel.viewToShow = .home
                                     case false:
-                                        self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text("\( self.firebaseViewModel.error?.localizedDescription ?? "unknown error")"),
-                                                               dismissButton: .default(Text("OK")))
                                         self.shouldShowAlert = true
                                     }
                                 }

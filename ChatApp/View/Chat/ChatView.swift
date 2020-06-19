@@ -9,13 +9,30 @@
 import SwiftUI
 
 struct ChatView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     var body: some View {
         NavigationView{
-            VStack{
-                ChatRoomView(firebaseViewModel: self.firebaseViewModel)
+            Form{
+                // For group chats
+                Section(
+                    header: ChatRoomHeader(userViewModel: self.userViewModel, chatRoomType: .groupChat),
+                    footer: ChatRoomFooter(userViewModel: self.userViewModel, chatRoomType: .groupChat)
+                ) {
+                    ChannelListView(userViewModel: self.userViewModel)
+                }
+                
+                // For individual users
+                Section(
+                    header: ChatRoomHeader(userViewModel: self.userViewModel, chatRoomType: .individualChat),
+                    footer: ChatRoomFooter(userViewModel: self.userViewModel, chatRoomType: .individualChat)
+                ) {
+                    UsersListView(userViewModel: self.userViewModel)
+                }
             }
             .navigationBarTitle("Chat")
+        }
+        .onAppear{
+         //   self.userViewModel.loadMessages()
         }
     }
 }

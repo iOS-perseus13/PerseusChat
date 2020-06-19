@@ -9,15 +9,16 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     @State var tabIndex: Int = 0
     
     var body: some View {
-        if firebaseViewModel.isLogedIn {
+        switch userViewModel.logInState{
+        case .loggedIn:
             return AnyView(
                 TabView(selection: self.$tabIndex) {
                     // Home Tab
-                    HomeView(firebaseViewModel: self.firebaseViewModel)
+                    HomeTab(userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.home.image)
                                 .font(.title)
@@ -33,7 +34,7 @@ struct MainView: View {
                     }.tag(TabTypes.call.tabIndex)
                     
                     //Message Tab
-                    ChatView(firebaseViewModel: self.firebaseViewModel)
+                    ChatView(userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.message.image)
                                 .font(.title)
@@ -41,7 +42,7 @@ struct MainView: View {
                     }.tag(TabTypes.message.tabIndex)
                     
                     //More Tab
-                    MoreView(firebaseViewModel: self.firebaseViewModel)
+                    MoreView(userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.more.image)
                                 .font(.title)
@@ -49,19 +50,14 @@ struct MainView: View {
                     }.tag(TabTypes.more.tabIndex)
                 }
             )
-        } else if self.firebaseViewModel.viewToShow == .login{
-            return AnyView(LogInView(firebaseViewModel: self.firebaseViewModel))
-        }
-        else if self.firebaseViewModel.viewToShow == .register{
-            return AnyView(RegisterView(firebaseViewModel: self.firebaseViewModel))
-        } else {
-            return AnyView(ActivityIndicatorView(isAnimating: true))
+        case .notLoggenIn:
+            if self.userViewModel.viewToShow == .login {
+                return AnyView(LogInView(userViewModel: self.userViewModel))
+            } else {
+                return AnyView(RegisterView(userViewModel: self.userViewModel))
+            }
+        case .notDetermined:
+            return AnyView (ActivityIndicatorView(isAnimating: true))
         }
     }
 }
-//
-//struct MainView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainView()
-//    }
-//}

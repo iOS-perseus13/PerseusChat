@@ -15,12 +15,11 @@ struct LoginInfo{
 
 /*
  User login State of an user
- 1. unknown: unknown state
- 2. loggedIn: user is logged in
- 3. loggedOut: user is logged out
+ 1. loggedIn: user is logged in
+ 3. notLoggenIn: user is logged out
  */
 enum LogInState: String, Codable {
-    case unknown
     case loggedIn
-    case loggedOut
+    case notLoggenIn
+    case notDetermined
 }

@@ -59,9 +59,33 @@ enum TabColor {
     }
 }
 
+struct HomeTab: View {
+    @ObservedObject var userViewModel: UserViewModel
+    var body: some View {
+        HomeView(userViewModel: self.userViewModel)
+    }
+}
+
+
+
 struct CallTab: View {
     var body: some View {
-        Text("Call Tab")
+        NavigationView{
+            VStack{
+                Text("Call Tab")
+            }
+            .navigationBarTitle("Calls", displayMode: .inline)
+        }
+        
+    }
+}
+
+
+
+struct MoreTab: View {
+    @ObservedObject var userViewModel: UserViewModel
+    var body: some View {
+        MoreView(userViewModel: self.userViewModel)
     }
 }
 
