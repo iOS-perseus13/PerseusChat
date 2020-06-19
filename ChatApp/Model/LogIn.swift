@@ -22,4 +22,5 @@ enum LogInState: String, Codable {
     case loggedIn
     case notLoggenIn
     case notDetermined
+    case error
 }

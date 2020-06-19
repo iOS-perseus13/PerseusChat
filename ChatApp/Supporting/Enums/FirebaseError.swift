@@ -17,7 +17,7 @@ enum FireBaseError: Error{
         switch self{
         case .userDoesNotExist: return "no such user"
         case .userAlreadyExists: return "user already exists"
-        default: return "something went wrong \(self)"
+        default: return "\(self)"
         }
     }
 }

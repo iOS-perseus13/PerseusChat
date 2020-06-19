@@ -159,7 +159,6 @@ struct RegisterView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
-                                self.userViewModel.logInState = .notDetermined
                                 self.userViewModel.register(name: self.name, profileImage: self.inputImage?.jpegData(compressionQuality: 0.25), email: self.email, password: self.password) { (status) in
                                     switch status{
                                     case true:
@@ -203,7 +202,9 @@ struct RegisterView: View {
                 if let alertItem = self.alertItem {
                     return alertItem
                 } else {
-                    return Alert(title: Text("Unknown alert"))
+                    let message = self.userViewModel.error?.localizedDescription.getCustomErrorMessage()
+                    let title = Text("Register error")
+                    return Alert(title: title, message: message)
                 }
             }
             .sheet(isPresented: $showingImagePicker, onDismiss: refreshProfileImage) {

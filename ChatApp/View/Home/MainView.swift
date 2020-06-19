@@ -50,7 +50,7 @@ struct MainView: View {
                     }.tag(TabTypes.more.tabIndex)
                 }
             )
-        case .notLoggenIn:
+        case .notLoggenIn, .error:
             if self.userViewModel.viewToShow == .login {
                 return AnyView(LogInView(userViewModel: self.userViewModel))
             } else {

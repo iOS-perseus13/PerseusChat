@@ -14,12 +14,13 @@ protocol UserOperations{
     func logIn(email: String, password: String, completion: @escaping(Bool)->Void)
     func logOut(completion: @escaping(Bool)->Void)
     func sendMessage(message: [String: Any], completion: @escaping(Bool)->Void)
+    func sendPasswordResetEmail(email: String, completion: @escaping (Bool) -> Void)
 }
 
 
 
 class UserViewModel: ObservableObject {
-    @Published var logInState: LogInState = .notDetermined
+    @Published var logInState: LogInState = .notLoggenIn
     @Published var user: FirebaseUser?
     @Published var viewToShow: AuthenticationViewTypes = .login
     @Published var error: FireBaseError?
@@ -45,6 +46,7 @@ class UserViewModel: ObservableObject {
             case .success(let user):
                 // check for UserDefaults, if data exists no need to save
                 // otherwise save it to userDefaults
+                print("profile found through cache")
                 self.user = user
                 self.loadUserProfileImage(userID: user.id)
                 let queue1 = OperationQueue()
@@ -57,8 +59,8 @@ class UserViewModel: ObservableObject {
                 }
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)
-                self.logInState = .notLoggenIn
-                self.viewToShow = .login
+                //self.logInState = .notLoggenIn
+                //self.viewToShow = .login
                 // clear userDefaults cache
                 self.updateUserDefaults(operationType: .delete)
             }
@@ -205,6 +207,10 @@ extension UserViewModel: UserOperations{
                         }
                     }
                 }
+                else {
+                    self.firebaseManager.createProfile(name: name, user: user, locationURL: "")
+                    completion(true)
+                }
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)
                 completion(false)
@@ -217,22 +223,12 @@ extension UserViewModel: UserOperations{
         firebaseManager.loginUser(email: email, password: password) { (result) in
             switch result{
             case .success(_):
-                //                self.firebaseManager.isProfileExists { (result) in
-                //                    switch result{
-                //                    case .success(let firebaseUser):
-                //                        self.user = firebaseUser
-                //                        DispatchQueue.main.async {
-                //                            self.loadUserProfileImage(userID: self.user?.id)
-                //                        }
-                //                        completion(true)
-                //                    case .failure(let error):
-                //                        self.error = FireBaseError.other(message: error.localizedDescription)
-                //                        completion(false)
-                //                    }
-                //                }
                 self.checkForCachedUser()
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)
+                //self.viewToShow = .login
+                //self.logInState = .error
+                print("login error: \(error.localizedDescription)")
                 completion(false)
             }
         }
@@ -268,6 +264,19 @@ extension UserViewModel: UserOperations{
                 completion(status)
             case .failure(let error):
                 print("Sending message failed: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
+    
+    // reset password
+    func sendPasswordResetEmail(email: String, completion: @escaping (Bool) -> Void){
+        firebaseManager.sendPasswordResetEmail(email: email) { (result) in
+            switch result{
+            case .success(let staus):
+                completion(staus)
+            case .failure(let error):
+                self.error = FireBaseError.other(message: error.localizedDescription)
                 completion(false)
             }
         }

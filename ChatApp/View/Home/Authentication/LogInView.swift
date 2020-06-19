@@ -79,7 +79,18 @@ struct LogInView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            if self.email.isValidEmailAddress(){
+                            if self.checkForValidCustomizedEmail(){
+                                self.userViewModel.sendPasswordResetEmail(email: self.email) { (result) in
+                                    switch result{
+                                    case true:
+                                        self.alertItem = APPAlerts.emailSentToResetPassword.alert
+                                    case false:
+                                        let message = self.userViewModel.error?.localizedDescription.getCustomErrorMessage()
+                                        let title = Text("Forget password error")
+                                        self.alertItem = Alert(title: title, message: message)
+                                    }
+                                    self.shouldShowAlert = true
+                                }
                             }
                             else {
                                 self.alertItem = APPAlerts.invalidEmailAddress.alert
@@ -96,18 +107,14 @@ struct LogInView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
-                                self.userViewModel.logInState = .notDetermined
                                 self.userViewModel.logIn(email: self.email, password: self.password) { (status) in
                                     switch status{
                                     case true:
                                         self.shouldShowAlert = false
-                                        self.userViewModel.logInState = .loggedIn
-                                        //self.userViewModel.viewToShow = .home
                                     case false:
                                         self.shouldShowAlert = true
                                     }
                                 }
-                                
                             }
                             else {
                                 self.shouldShowAlert = true
@@ -138,7 +145,9 @@ struct LogInView: View {
                     if let alertItem = self.alertItem {
                         return alertItem
                     } else {
-                        return Alert(title: Text("Unknown alert"))
+                        let message = self.userViewModel.error?.localizedDescription.getCustomErrorMessage()
+                        let title = Text("Login error")
+                        return Alert(title: title, message: message)
                     }
             }
         }

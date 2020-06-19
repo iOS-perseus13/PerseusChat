@@ -56,6 +56,7 @@ class FirebaseManager: ObservableObject {
             }
         }
         else {
+            print("no user found")
             self.isLoggedIn = false
             self.user = nil
             completion(.failure(FireBaseError.userDoesNotExist))
@@ -235,6 +236,17 @@ class FirebaseManager: ObservableObject {
             }
             else {
                 print("success")
+                completion(.success(true))
+            }
+        }
+    }
+    // reset password
+    func sendPasswordResetEmail(email: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+            if let error = error {
+                completion(.failure(error))
+            }
+            else {
                 completion(.success(true))
             }
         }
