@@ -13,7 +13,6 @@ struct ChatRoomDetailsView: View {
     var body: some View {
         VStack {
             //List of Messages
-            
             Text("Welcome to room: .....")
         }.navigationBarTitle(Text(roomName), displayMode: .inline)
         

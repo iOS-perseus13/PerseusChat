@@ -26,12 +26,10 @@ struct FirebaseMessage: Codable, Hashable{
     var sequenceNumner: Int = 0
 }
 
-
 struct FirebaseChatRoom : Hashable, Equatable {
     static func == (lhs: FirebaseChatRoom, rhs: FirebaseChatRoom) -> Bool {
         rhs.lastMessage?.createdTime == rhs.lastMessage?.createdTime
     }
-    
     var id: String
     var name: String
     var admin: String

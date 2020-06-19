@@ -9,14 +9,6 @@ import SwiftUI
 import Firebase
 
 
-enum UserDefaultsOperationTypes: String {
-    case create
-    case delete
-    case update
-    case search
-}
-
-
 protocol UserOperations{
     func register(name: String, profileImage: Data?, email: String, password: String, completion: @escaping(Bool)->Void)
     func logIn(email: String, password: String, completion: @escaping(Bool)->Void)

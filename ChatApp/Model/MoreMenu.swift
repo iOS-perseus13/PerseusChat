@@ -24,23 +24,14 @@ struct MoreListSection: Identifiable{
                 .init(title: .theApp, targetView: AnyView(AboutTheAppView())),
                 .init(title: .appVersion, targetView: AnyView(AppVersionView())),
                 .init(title: .appFeedback, targetView: AnyView(AppFeedbackView())),
-                //.init(title: .disclaimer, targetView: AnyView(DisclaimerView()))
             ]
         case .myAccount:
                 return [
                     .init(title: .logout, shouldNavigate: false)
                 ]
         case .adminMenu:
-//            if UserDefaults.standard.getUserType() == .owner || UserDefaults.standard.getUserType() == .superUser {
-//                return [
-//                    .init(title: .manageGroups),
-//                    .init(title: .manageUsers),
-//                    .init(title: .managePlaces)
-//                ]
-//            } else {
                 return [
                 ]
-            //}
         }
     }
 }

@@ -18,14 +18,7 @@ struct ChatRoomHeader: View {
             Spacer()
             if chatRoomType == .groupChat{
                 Button(action: {
-                    //                    self.firebaseViewModel.createChatRoom(chatRoomName: "Room 1") { (result) in
-                    //                        switch result{
-                    //                        case .success(let status):
-                    //                            print("Status: \(status)")
-                    //                        case .failure(let error):
-                    //                            print("Chat room error \(error.localizedDescription)")
-                    //                        }
-                    //                    }
+                    // action ...
                 }) {
                     Image(systemName: "plus.circle.fill")
                         .foregroundColor(.blue)

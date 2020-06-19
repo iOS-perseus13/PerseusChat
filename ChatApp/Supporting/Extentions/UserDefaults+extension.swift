@@ -8,6 +8,17 @@
 
 import SwiftUI
 
+
+enum UserDefaultsOperationTypes: String {
+    case create
+    case delete
+    case update
+    case search
+}
+
+
+
+
 //extension UserDefaults{
 //    enum UserDefaultsKeysType: String{
 //        case currentUser

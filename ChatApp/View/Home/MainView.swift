@@ -26,7 +26,7 @@ struct MainView: View {
                     }.tag(TabTypes.home.tabIndex)
                     
                     // Chat Tab
-                    CallTab()
+                    CallView()
                         .tabItem {
                             Image(systemName: TabTypes.call.image)
                                 .font(.title)

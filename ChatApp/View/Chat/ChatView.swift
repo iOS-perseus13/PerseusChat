@@ -31,8 +31,5 @@ struct ChatView: View {
             }
             .navigationBarTitle("Chat")
         }
-        .onAppear{
-         //   self.userViewModel.loadMessages()
-        }
     }
 }
