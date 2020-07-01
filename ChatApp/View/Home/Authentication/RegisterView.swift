@@ -13,8 +13,6 @@ import Combine
 
 
 struct RegisterView: View {
-    
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     
@@ -161,24 +159,13 @@ struct RegisterView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
-                                self.firebaseViewModel.registerUser(name: self.name, profileImage: self.inputImage, email: self.email, password: self.password) { (resutl) in
-                                    switch resutl{
-                                    case .success(let status):
-                                        switch status {
-                                        // profile image suceesfully saved
-                                        case true:
-                                            self.userViewModel.user = self.firebaseViewModel.currentUser
-                                        // profile image failed to save
-                                        case false:
-                                            self.userViewModel.user = self.firebaseViewModel.currentUser
-                                            break
-                                        }
+                                self.userViewModel.register(name: self.name, profileImage: self.inputImage?.jpegData(compressionQuality: 0.25), email: self.email, password: self.password) { (status) in
+                                    switch status{
+                                    case true:
+                                        self.shouldShowAlert = false
                                         self.userViewModel.logInState = .loggedIn
-                                        self.userViewModel.user = self.firebaseViewModel.currentUser
-                                    case .failure(let error):
-                                        self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text(error.localizedDescription),
-                                                               dismissButton: .default(Text("OK")))
+                                        self.userViewModel.viewToShow = .home
+                                    case false:
                                         self.shouldShowAlert = true
                                     }
                                 }
@@ -215,7 +202,9 @@ struct RegisterView: View {
                 if let alertItem = self.alertItem {
                     return alertItem
                 } else {
-                    return Alert(title: Text("Unknown alert"))
+                    let message = self.userViewModel.error?.localizedDescription.getCustomErrorMessage()
+                    let title = Text("Register error")
+                    return Alert(title: title, message: message)
                 }
             }
             .sheet(isPresented: $showingImagePicker, onDismiss: refreshProfileImage) {

@@ -8,11 +8,24 @@
 
 import Foundation
 import CommonCrypto
+import SwiftUI
+
 // required for Email address format validator
 let __firstpart = "[A-Z0-9a-z]([A-Z0-9a-z._%+-]{0,30}[A-Z0-9a-z])?"
 let __serverpart = "([A-Z0-9a-z]([A-Z0-9a-z-]{0,30}[A-Z0-9a-z])?\\.){1,5}"
 let __emailRegex = __firstpart + "@" + __serverpart + "[A-Za-z]{2,8}"
 let __emailPredicate = NSPredicate(format: "SELF MATCHES %@", __emailRegex)
+
+// MARK:- Customise error message
+extension String{
+    func getCustomErrorMessage()->Text? {
+        var errorMessage = "Unknown error"
+        if let message = self.split(separator: "\"").dropLast().dropFirst().first {
+            errorMessage = String(message)
+        }
+        return Text(errorMessage)
+    }
+}
 
 // MARK:- Valid email for a string
 extension String{

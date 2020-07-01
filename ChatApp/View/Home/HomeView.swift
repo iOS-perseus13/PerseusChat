@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @State var isUserNameEditing: Bool = false
     @State var userName: String = ""
@@ -23,20 +22,24 @@ struct HomeView: View {
                 ) {
                     HStack(spacing: 10){
                         // profile picture
-                        ProfileImageSection(firebaseViewModel: self.firebaseViewModel)
+                        ProfileImageSection(userViewModel: self.userViewModel)
                             .onTapGesture {
                                 print("Change profile picture")
                         }
                         // user name
                         VStack{
                             HStack{
-                                Text(userViewModel.userName)
+                                Text(userViewModel.user?.name ?? "")
                                 Spacer()
                             }
                             HStack{
                                 Text("Status")
                                 Spacer()
                             }
+                            //                            HStack{
+                            //                                Text("Status")
+                            //                                Spacer()
+                            //                            }
                         }
                         Spacer()
                     }
@@ -47,14 +50,13 @@ struct HomeView: View {
                     HStack{
                         LogOutSection()
                             .onTapGesture {
-                                self.userViewModel.logInState = .loggedOut
-                                self.firebaseViewModel.logoutUser { (result) in
-                                    switch result{
-                                    case .success( _):
-                                        self.userViewModel.clearData()
-                                        self.firebaseViewModel.clearData()
-                                    case .failure(let error):
-                                        print("log out falied :\(error.localizedDescription)")
+                                self.userViewModel.logOut { (status) in
+                                    switch status {
+                                    case true:
+                                        self.userViewModel.logInState = .notLoggenIn
+                                        self.userViewModel.viewToShow = .login
+                                    case false:
+                                        print("Login failed....")
                                     }
                                 }
                         }
@@ -63,7 +65,6 @@ struct HomeView: View {
             }
             .navigationBarTitle("User settings", displayMode: .inline)
         }.padding()
-        
     }
 }
 
@@ -85,10 +86,10 @@ struct LogOutSection: View {
  Profile image section
  */
 struct ProfileImageSection: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
+    @ObservedObject var userViewModel: UserViewModel
     var body: some View{
         VStack{
-            if self.firebaseViewModel.profileImage == nil {
+            if self.userViewModel.profileImage == nil {
                 Image(systemName: "person")
                     .resizable()
                     .frame(width: 75, height : 75)
@@ -97,7 +98,7 @@ struct ProfileImageSection: View {
                         .stroke(Color.blue, lineWidth: 1)
                 )
             } else {
-                Image(uiImage: self.firebaseViewModel.profileImage!)
+                Image(uiImage: self.userViewModel.profileImage!)
                     .resizable()
                     .frame(width: 75, height : 75)
                     .clipShape(Circle())

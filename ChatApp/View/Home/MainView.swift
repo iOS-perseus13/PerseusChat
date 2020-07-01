@@ -9,16 +9,16 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @State var tabIndex: Int = 0
+    
     var body: some View {
-        
-        if userViewModel.logInState == .loggedIn {
+        switch userViewModel.logInState{
+        case .loggedIn:
             return AnyView(
                 TabView(selection: self.$tabIndex) {
                     // Home Tab
-                    HomeTab(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel)
+                    HomeTab(userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.home.image)
                                 .font(.title)
@@ -26,7 +26,7 @@ struct MainView: View {
                     }.tag(TabTypes.home.tabIndex)
                     
                     // Chat Tab
-                    CallTab()
+                    CallView()
                         .tabItem {
                             Image(systemName: TabTypes.call.image)
                                 .font(.title)
@@ -34,7 +34,7 @@ struct MainView: View {
                     }.tag(TabTypes.call.tabIndex)
                     
                     //Message Tab
-                    ChatView()
+                    ChatView(userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.message.image)
                                 .font(.title)
@@ -42,7 +42,7 @@ struct MainView: View {
                     }.tag(TabTypes.message.tabIndex)
                     
                     //More Tab
-                    MoreTab(userViewModel: self.userViewModel)
+                    MoreView(userViewModel: self.userViewModel)
                         .tabItem {
                             Image(systemName: TabTypes.more.image)
                                 .font(.title)
@@ -50,17 +50,14 @@ struct MainView: View {
                     }.tag(TabTypes.more.tabIndex)
                 }
             )
-        } else if self.userViewModel.viewToShow == .login{
-            return AnyView(LogInView(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel))
-        }
-        else {
-            return AnyView(RegisterView(firebaseViewModel: self.firebaseViewModel, userViewModel: self.userViewModel))
+        case .notLoggenIn, .error:
+            if self.userViewModel.viewToShow == .login {
+                return AnyView(LogInView(userViewModel: self.userViewModel))
+            } else {
+                return AnyView(RegisterView(userViewModel: self.userViewModel))
+            }
+        case .notDetermined:
+            return AnyView (ActivityIndicatorView(isAnimating: true))
         }
     }
 }
-//
-//struct MainView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainView()
-//    }
-//}

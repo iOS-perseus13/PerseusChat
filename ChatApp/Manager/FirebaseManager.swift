@@ -14,245 +14,246 @@ import FirebaseFirestore
 import CoreLocation
 
 
-
-enum FireBaseError: Error{
-    case userAlreadyExists
-    case userDoesNotExist
-    case other(message: String)
-    var localizedDescription: String{
-        switch self{
-        case .userDoesNotExist: return "no such user"
-        case .userAlreadyExists: return "user already exists"
-        default: return "something went wrong \(self)"
-        }
-    }
-}
-protocol FireBaseManagerType: class {
-//    func isUserExists(email: String, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
-//    func sendPasswordReset(email: String, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
-//    func createUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
-//    func loginUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
-//    func loadUserProfile(userID: String, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void)
-//    func saveUserProfile(userID: String, userProfile: UserProfile, completion: @escaping(Result<Bool?,FireBaseError>)->Void)
-//    func saveProfileImage(userID: String, profileImage: UIImage?, completion: @escaping (Result<String?, FireBaseError>)->Void)
-//    func loadProfileImage(userID: String, completion: @escaping (Result<UIImage?, FireBaseError>)->Void)
-//    func updateLocation(forUser userID: String, location:CLLocation, completion: @escaping (Result<Bool?, FireBaseError>)->Void)
-//
-    // Message
-//    func sendMessage(){
-//    
-//    }
-//    
-//    // Chatroom
-//    func createChatRoom(){
-//    
-//    }
-}
-
-class FirebaseAuthManager: ObservableObject{
-    var email: String = ""
-    @Published var loginState: Bool = false
-    @Published var currentUser: FIRUser?
+class FirebaseManager: ObservableObject {
+    @Published var isLoggedIn: Bool = false
+    @Published var user: Firebase.User?
+    private var userListner: ListenerRegistration? = nil
+    private var messageListner: ListenerRegistration? = nil
+    
     init(){
-        if let user = Auth.auth().currentUser {
-            self.currentUser = user
-            self.loginState = true
+    }
+    // if profile exists load the profile
+    func isProfileExists(completion: @escaping(Result<FirebaseUser,Error>)->Void){
+        if let user = Auth.auth().currentUser{
+            let fireStore = Firestore.firestore()
+            let docRef = fireStore.collection(FirebaseLocations.userProfiles.rawValue)
+            docRef.whereField("id", isEqualTo: user.uid).getDocuments { (docSnapshot, error) in
+                if let error = error {
+                    print("Error decoding firebase userProfiles: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+                else if let dict = docSnapshot?.documents.first?.data(){
+                    if let data = try? JSONSerialization.data(withJSONObject: dict, options: []) {
+                        do {
+                            let genericModel = try JSONDecoder().decode(FirebaseUser.self, from: data)
+                            print("user profile decoding complete")
+                            completion(.success(genericModel))
+                        }
+                        catch (let error) {
+                            print("Error .......: \(error.localizedDescription)")
+                            completion(.failure(FireBaseError.jsonDecodingError))
+                        }
+                    }
+                    else {
+                        print("user profile decoding Error.....")
+                        completion(.failure(FireBaseError.jsonDecodingError))
+                    }
+                }
+                else {
+                    print("Invalid cache ....")
+                    completion(.failure(FireBaseError.invalidCache))
+                }
+            }
+        }
+        else {
+            print("no user found")
+            self.isLoggedIn = false
+            self.user = nil
+            completion(.failure(FireBaseError.userDoesNotExist))
+        }
+    }
+    
+    
+    // fetch user profile image
+    func loadProfileImage(userID: String, completion: @escaping(Result<UIImage,Error>)->Void){
+        let storage = Storage.storage()
+        let storageReferance = storage.reference(forURL: FirebaseLocations.profileImages.location)
+        let storageProfileReference = storageReferance.child(FirebaseLocations.profileImages.rawValue).child(userID)
+        storageProfileReference.getData(maxSize: 3*1024*1024) { (data, error) in
+            if let data = data, let image = UIImage(data: data) {
+                print("Profile image loaded....")
+                completion(.success(image))
+            } else if let error = error {
+                print("Error loading image from firebase: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    
+    // create user
+    func createUser(email: String, password: String, completion:@escaping(Result<Firebase.User,Error>)->Void){
+        Auth.auth().createUser(withEmail: email, password: password) { (authDataResult, error) in
+            // create user failed
+            if let error = error{
+                completion(.failure(error))
+            } else if let user = authDataResult?.user{
+                // if image presents
+                completion(.success(user))
+            }
+        }
+    }
+    
+    // save Profile Image
+    func updateProfileImage(userID: String, imageData: Data, completion: @escaping(Result<String,Error>)->Void){
+        let storage = Storage.storage()
+        let storageReferance = storage.reference()
+        let storageProfileReference = storageReferance.child(FirebaseLocations.profileImages.rawValue).child(userID)
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpg"
+        storageProfileReference.putData(imageData, metadata: metaData) { (storageMetaData, error) in
+            if let error = error {
+                print("Profile image could not be saved....")
+                completion(.failure(error))
+            } else {
+                storageProfileReference.downloadURL { (url, error) in
+                    if let error = error {
+                        print("Profile image could not be saved....")
+                        completion(.failure(error))
+                    } else if let url = url?.absoluteString {
+                        completion(.success(url))
+                    }
+                }
+            }
+        }
+    }
+    
+    // Create profile
+    func createProfile(name: String, user: Firebase.User, locationURL: String, completion: @escaping(Result<FirebaseUser?,Error>)->Void){
+        guard let email = user.email else {return}
+        let database = Firestore.firestore()
+        var userProfile: [String: Any] = [:]
+        userProfile = [ "id": user.uid,
+                        "email": email,
+                        "name" : name
+        ]
+        if !locationURL.isEmpty {
+            userProfile["profileURL"] = locationURL
+        }
+        database.collection(FirebaseLocations.userProfiles.rawValue).addDocument(data: userProfile) { (error) in
+            let firebaseUser = FirebaseUser(id: user.uid, email: email, name: name, profileImage: userProfile["profileURL"] as? String)
+            print("User profile for register: \(userProfile)")
+            if let error = error {
+                print("Profile image could not be saved....")
+                completion(.failure(error))
+            } else {
+                completion(.success(firebaseUser))
+                print("Profile image saved....")
+            }
+            
+        }
+    }
+    
+    
+    // sign In
+    func loginUser(email: String, password: String, completion: @escaping (Result<Firebase.User, Error>)->Void){
+        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+            if let user = authResult?.user {
+                completion(.success(user))
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // log Out
+    func logOut(completion: @escaping(Result<Bool,Error>)->Void){
+        guard let _ = Auth.auth().currentUser?.uid else {return}
+        do {
+            try Auth.auth().signOut()
+            completion(.success(true))
+        }
+        catch (let error){
+            print("Logout failed: \(error.localizedDescription)")
+            completion(.failure(error))
+        }
+    }
+    
+    // load users
+    func loadUsers(completion: @escaping(Result<[FirebaseUser],Error>)->Void){
+        let database = Firestore.firestore()
+        self.userListner = database.collection(FirebaseLocations.userProfiles.rawValue).addSnapshotListener { (snapShot, error) in
+            if let error = error {
+                print("Error loading users: \(error.localizedDescription)")
+                completion(.failure(error))
+            } else if let snapShot = snapShot {
+                var users : [FirebaseUser] = []
+                for document in snapShot.documents {
+                    let dict = document.data()
+                    if let data = try? JSONSerialization.data(withJSONObject: dict, options: []) {
+                        do {
+                            let genericModel = try JSONDecoder().decode(FirebaseUser.self, from: data)
+                            users.append(genericModel)
+                        }
+                        catch (let error) {
+                            completion(.failure(error))
+                            print("Error loading users.......: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                users = users.sorted(by: { (lhs, rhs)  in
+                    lhs.name < rhs.name
+                })
+                completion(.success(users))
+            }
+        }
+    }
+    
+    // load Messages
+    func loadMessages(completion: @escaping(Result<[FirebaseMessage],Error>)->Void){
+        let database = Firestore.firestore()
+        self.messageListner = database.collection(FirebaseLocations.messages.rawValue).addSnapshotListener { (snapShot, error) in
+            if let error = error {
+                print("Error loading messages: \(error.localizedDescription)")
+                completion(.failure(error))
+            } else if let snapShot = snapShot {
+                var messages : [FirebaseMessage] = []
+                for document in snapShot.documents {
+                    let dict = document.data()
+                    if let data = try? JSONSerialization.data(withJSONObject: dict, options: []) {
+                        do {
+                            var genericModel = try JSONDecoder().decode(FirebaseMessage.self, from: data)
+                            genericModel.id = document.documentID
+                            messages.append(genericModel)
+                        }
+                        catch (let error) {
+                            print("Error .......: \(error.localizedDescription)")
+                            completion(.failure(error))
+                        }
+                    }
+                }
+                messages.sort {
+                    $0.sequenceNumner < $1.sequenceNumner
+                }
+                completion(.success(messages))
+            }
+        }
+    }
+    
+    // send message
+    func sendMessage(userID: String, message: [String: Any], completion: @escaping(Result<Bool, Error>)->Void){
+        let database = Firestore.firestore()
+        database.collection(FirebaseLocations.messages.rawValue).addDocument(data: message) { (error) in
+            if let error = error{
+                print("failed: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+            else {
+                print("success")
+                completion(.success(true))
+            }
+        }
+    }
+    // reset password
+    func sendPasswordResetEmail(email: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+            if let error = error {
+                completion(.failure(error))
+            }
+            else {
+                completion(.success(true))
+            }
         }
     }
 }
 
-
-
-
-//extension FirebaseAuthManager: FireBaseManagerType{
-//    static let shared = FirebaseAuthManager()
-//    private init(){}
-//    var currentUserProfile: UserProfile = UserProfile()
-//    var loginState: Bool = false
-//    var currentUser:FIRUser? {
-//        return Auth.auth().currentUser
-//    }
-//
-//    func isUserExists(email: String, completion: @escaping (Result<Bool?, FireBaseError>) -> Void) {
-//        Auth.auth().fetchSignInMethods(forEmail: email) { (signInMethods, error ) in
-//            if let error = error{
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            } else if let signInMethods = signInMethods{
-//                if signInMethods.contains("password") {
-//                    completion(.success(true))
-//                } else {
-//                    completion(.success(false))
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    func sendPasswordReset(email: String, completion: @escaping (Result<Bool?, FireBaseError>) -> Void) {
-//        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
-//            if let error = error {
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            } else {
-//                completion(.success(true))
-//            }
-//        }
-//    }
-//
-//    func createUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void){
-//        Auth.auth().createUser(withEmail: loginInfo.email, password: loginInfo.password) { (authResult, error) in
-//            if let error = error {
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            } else if let data = authResult {
-//                self.loadUserProfile(userID: data.user.uid) { (result) in
-//                    switch result{
-//                    case .success(let userProfile):
-//                        if let userProfile = userProfile {
-//                           // self.currentUserProfile = userProfile
-//                        }
-//                    case .failure(_):
-//                        break
-//                    }
-//                }
-//                completion(.success(self.currentUserProfile))
-//                self.loginState = true
-//            }
-//        }
-//    }
-//    func loginUser(loginInfo: LoginInfo, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void){
-//        Auth.auth().signIn(withEmail: loginInfo.email, password: loginInfo.password) { (authResult, error) in
-//            if let data = authResult {
-//                self.loadUserProfile(userID: data.user.uid) { (result) in
-//                    switch result{
-//                    case .success(let userProfile):
-//                        if let userProfile = userProfile {
-//                            self.currentUserProfile = userProfile
-//                            completion(.success(self.currentUserProfile))
-//                        }
-//                    case .failure(_):
-//                        break
-//                    }
-//                }
-//            } else if let error = error {
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            }
-//        }
-//    }
-//    func loadProfileImage(userID: String, completion: @escaping (Result<UIImage?, FireBaseError>)->Void){
-//        let storage = Storage.storage()
-//        let storageReferance = storage.reference(forURL: "gs://perseus-chat-app.appspot.com/")
-//        let storageProfileReference = storageReferance.child("profile").child(userID)
-//        storageProfileReference.getData(maxSize: 3*1024*1024) { (data, error) in
-//            if let data = data, let image = UIImage(data: data) {
-//                completion(.success(image))
-//            } else if let error = error {
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            }
-//        }
-//    }
-//    func loadUserProfile(userID: String, completion: @escaping (Result<UserProfile?, FireBaseError>)->Void) {
-//        switch userID.isEmpty {
-//        case true:
-//            completion(.failure(.other(message: "Invalid user ID")))
-//        case false:
-//            let db = Firestore.firestore()
-//            db.collection("users").document(userID).getDocument { (snapShot, error) in
-//                if let error = error {
-//                    completion(.failure(.other(message: error.localizedDescription)))
-//                } else if let snapShot = snapShot{
-//                    var userProfile = UserProfile()
-//                    userProfile.userID = userID
-//                    userProfile.firstName = snapShot["firstName"] as? String
-//                    userProfile.lastName = snapShot["lastName"] as? String
-//                    self.loadProfileImage(userID: userID) { (result) in
-//                        switch result{
-//                        case .failure(_):
-//                            completion(.success(userProfile))
-//                        case .success(let image):
-//                            userProfile.profileImage = image
-//                            completion(.success(userProfile))
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    func saveUserProfile(userID: String, userProfile: UserProfile, completion: @escaping(Result<Bool?,FireBaseError>)->Void){
-//        var profileImageURL = ""
-//        switch userID.isEmpty{
-//        case true:
-//            completion(.failure(.other(message: "Invalid user ID")))
-//        case false:
-//            saveProfileImage(userID: userID, profileImage: userProfile.profileImage) { (result) in
-//                switch result {
-//                case .success(let imageURL):
-//                    if let url = imageURL {
-//                        profileImageURL = url
-//                    }
-//                    let profileDictionary: [String: Any] =
-//                        [ "firstName" : userProfile.firstName ?? "",
-//                          "lastName" : userProfile.lastName ?? "",
-//                          "profileImageURL": profileImageURL
-//                    ]
-//                    let db = Firestore.firestore()
-//                    db.collection("users").document(userID).setData(profileDictionary) { (error) in
-//                        if let error = error {
-//                            completion(.failure(.other(message: error.localizedDescription)))
-//                        } else {
-//                            self.currentUserProfile = userProfile
-//                            completion(.success(true))
-//                        }
-//                    }
-//                case .failure(let error):
-//                    completion(.failure(.other(message: error.localizedDescription)))
-//                }
-//            }
-//        }
-//    }
-//
-//    func saveProfileImage(userID: String, profileImage: UIImage?, completion: @escaping (Result<String?, FireBaseError>)->Void){
-//        guard let imageData = profileImage?.jpegData(compressionQuality: 0.35) else {
-//            completion(.failure(.other(message: "Error on saving profile image")))
-//            return }
-//        let storage = Storage.storage()
-//        let storageReferance = storage.reference()
-//        let storageProfileReference = storageReferance.child("profile").child(userID)
-//        let metaData = StorageMetadata()
-//        metaData.contentType = "image/jpg"
-//        storageProfileReference.putData(imageData, metadata: metaData) { (storageMetaData, error) in
-//            if let error = error {
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            } else {
-//                storageProfileReference.downloadURL { (url, error) in
-//                    if let error = error {
-//                        completion(.failure(.other(message: error.localizedDescription)))
-//                    } else if let url = url {
-//                        completion(.success(url.absoluteString))
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    func clearUserDefaults(){
-//        if let domain = Bundle.main.bundleIdentifier{
-//            UserDefaults.standard.removePersistentDomain(forName: domain)
-//            UserDefaults.standard.synchronize()
-//        }
-//    }
-//
-//    func updateLocation(forUser userID: String, location:CLLocation, completion: @escaping (Result<Bool?, FireBaseError>)->Void){
-//        let db = Firestore.firestore()
-//        let locationDictionary: [String: Any] =
-//            [ "latitude" : String(location.coordinate.latitude),
-//              "longitude" : String(location.coordinate.longitude),
-//              "date" : location.timestamp.description
-//        ]
-//        db.collection("locations").document(userID).collection("locations").addDocument(data: locationDictionary){ (error) in
-//            if let error = error {
-//                completion(.failure(.other(message: error.localizedDescription)))
-//            } else {
-//                completion(.success(true))
-//            }
-//        }
-//    }
-//}
-//

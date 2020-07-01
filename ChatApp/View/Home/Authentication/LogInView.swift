@@ -10,7 +10,6 @@ import SwiftUI
 import Combine
 
 struct LogInView: View {
-    @ObservedObject var firebaseViewModel: FirebaseViewModel
     @ObservedObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentation
     @State var email: String = ""
@@ -80,15 +79,15 @@ struct LogInView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            if self.checkForValidEmail(){
-                                self.firebaseViewModel.sendPasswordResetEmail(email: self.email) { (result) in
+                            if self.checkForValidCustomizedEmail(){
+                                self.userViewModel.sendPasswordResetEmail(email: self.email) { (result) in
                                     switch result{
-                                    case .success(_):
+                                    case true:
                                         self.alertItem = APPAlerts.emailSentToResetPassword.alert
-                                    case .failure(let error):
-                                        self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text(error.localizedDescription),
-                                                               dismissButton: .default(Text("OK")))
+                                    case false:
+                                        let message = self.userViewModel.error?.localizedDescription.getCustomErrorMessage()
+                                        let title = Text("Forget password error")
+                                        self.alertItem = Alert(title: title, message: message)
                                     }
                                     self.shouldShowAlert = true
                                 }
@@ -108,15 +107,11 @@ struct LogInView: View {
                     HStack{
                         Button(action: {
                             if self.checkForValidInput() {
-                                self.firebaseViewModel.loginUser(email: self.email, password: self.password) { (result) in
-                                    switch result{
-                                    case .success( _ ):
-                                        self.userViewModel.logInState = .loggedIn
-                                        self.userViewModel.user = self.firebaseViewModel.currentUser
-                                    case .failure(let error):
-                                        self.alertItem = Alert(title: Text("Firebase error"),
-                                                               message: Text(error.localizedDescription),
-                                                               dismissButton: .default(Text("OK")))
+                                self.userViewModel.logIn(email: self.email, password: self.password) { (status) in
+                                    switch status{
+                                    case true:
+                                        self.shouldShowAlert = false
+                                    case false:
                                         self.shouldShowAlert = true
                                     }
                                 }
@@ -150,12 +145,14 @@ struct LogInView: View {
                     if let alertItem = self.alertItem {
                         return alertItem
                     } else {
-                        return Alert(title: Text("Unknown alert"))
+                        let message = self.userViewModel.error?.localizedDescription.getCustomErrorMessage()
+                        let title = Text("Login error")
+                        return Alert(title: title, message: message)
                     }
             }
         }
     }
-    private func checkForValidEmail()->Bool{
+    private func checkForValidCustomizedEmail()->Bool{
         let emailAddress = self.email.trimmingCharacters(in: .whitespacesAndNewlines)
         if !emailAddress.isValidEmailAddress(){
             self.alertItem = APPAlerts.invalidEmailAddress.alert

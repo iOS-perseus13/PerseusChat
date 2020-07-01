@@ -8,6 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		4489724E63448FE1F0BCAACC /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6D35540723F651BE6A531C /* Pods_ChatApp.framework */; };
+		4841B2C724ACE3EE003F1F84 /* IndividualChatDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2C624ACE3EE003F1F84 /* IndividualChatDetailView.swift */; };
+		4841B2CA24ACE427003F1F84 /* GroupChatDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2C924ACE427003F1F84 /* GroupChatDetailView.swift */; };
+		4841B2CC24ACE452003F1F84 /* ChatRoomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2CB24ACE452003F1F84 /* ChatRoomHeader.swift */; };
+		4841B2CE24ACE46D003F1F84 /* ChatRoomFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2CD24ACE46D003F1F84 /* ChatRoomFooter.swift */; };
+		4841B2D024ACE489003F1F84 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2CF24ACE489003F1F84 /* UserListView.swift */; };
+		4841B2D224ACE4A2003F1F84 /* ChannelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2D124ACE4A2003F1F84 /* ChannelListView.swift */; };
+		4841B2D424ACE4C2003F1F84 /* LastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2D324ACE4C2003F1F84 /* LastMessageView.swift */; };
+		4841B2D624ACE4DA003F1F84 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2D524ACE4DA003F1F84 /* MessageDetailView.swift */; };
+		4841B2D824ACE4F7003F1F84 /* ChatRoomDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2D724ACE4F7003F1F84 /* ChatRoomDetailsView.swift */; };
+		4841B2DA24ACE50A003F1F84 /* ChatRoomPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2D924ACE50A003F1F84 /* ChatRoomPreview.swift */; };
+		4841B2DC24ACE6A7003F1F84 /* FirebaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2DB24ACE6A7003F1F84 /* FirebaseError.swift */; };
+		4841B2DE24ACE757003F1F84 /* FirebaseLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2DD24ACE757003F1F84 /* FirebaseLocations.swift */; };
+		4841B2E024ACE78D003F1F84 /* Int+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4841B2DF24ACE78D003F1F84 /* Int+extension.swift */; };
 		F057DE69248446310071E75C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057DE68248446310071E75C /* AppDelegate.swift */; };
 		F057DE6B248446310071E75C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057DE6A248446310071E75C /* SceneDelegate.swift */; };
 		F057DE6F248446340071E75C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F057DE6E248446340071E75C /* Assets.xcassets */; };
@@ -57,6 +70,19 @@
 
 /* Begin PBXFileReference section */
 		3AEE662CC2AB7DA4B94B172A /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
+		4841B2C624ACE3EE003F1F84 /* IndividualChatDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualChatDetailView.swift; sourceTree = "<group>"; };
+		4841B2C924ACE427003F1F84 /* GroupChatDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatDetailView.swift; sourceTree = "<group>"; };
+		4841B2CB24ACE452003F1F84 /* ChatRoomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomHeader.swift; sourceTree = "<group>"; };
+		4841B2CD24ACE46D003F1F84 /* ChatRoomFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomFooter.swift; sourceTree = "<group>"; };
+		4841B2CF24ACE489003F1F84 /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
+		4841B2D124ACE4A2003F1F84 /* ChannelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListView.swift; sourceTree = "<group>"; };
+		4841B2D324ACE4C2003F1F84 /* LastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastMessageView.swift; sourceTree = "<group>"; };
+		4841B2D524ACE4DA003F1F84 /* MessageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
+		4841B2D724ACE4F7003F1F84 /* ChatRoomDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDetailsView.swift; sourceTree = "<group>"; };
+		4841B2D924ACE50A003F1F84 /* ChatRoomPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomPreview.swift; sourceTree = "<group>"; };
+		4841B2DB24ACE6A7003F1F84 /* FirebaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseError.swift; sourceTree = "<group>"; };
+		4841B2DD24ACE757003F1F84 /* FirebaseLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseLocations.swift; sourceTree = "<group>"; };
+		4841B2DF24ACE78D003F1F84 /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
 		7A2740C0DD6B97C348E5837A /* Pods-ChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.release.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.release.xcconfig"; sourceTree = "<group>"; };
 		CA6D35540723F651BE6A531C /* Pods_ChatApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F057DE65248446310071E75C /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +146,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4841B2C524ACE3CD003F1F84 /* Individual */ = {
+			isa = PBXGroup;
+			children = (
+				4841B2C624ACE3EE003F1F84 /* IndividualChatDetailView.swift */,
+			);
+			path = Individual;
+			sourceTree = "<group>";
+		};
+		4841B2C824ACE40E003F1F84 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				4841B2C924ACE427003F1F84 /* GroupChatDetailView.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
 		8C407892396F72556140D006 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,7 +324,17 @@
 		F094248D24862BE90069B045 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				4841B2C824ACE40E003F1F84 /* Group */,
+				4841B2C524ACE3CD003F1F84 /* Individual */,
 				F094248F24862C060069B045 /* ChatView.swift */,
+				4841B2CB24ACE452003F1F84 /* ChatRoomHeader.swift */,
+				4841B2CD24ACE46D003F1F84 /* ChatRoomFooter.swift */,
+				4841B2CF24ACE489003F1F84 /* UserListView.swift */,
+				4841B2D124ACE4A2003F1F84 /* ChannelListView.swift */,
+				4841B2D324ACE4C2003F1F84 /* LastMessageView.swift */,
+				4841B2D524ACE4DA003F1F84 /* MessageDetailView.swift */,
+				4841B2D724ACE4F7003F1F84 /* ChatRoomDetailsView.swift */,
+				4841B2D924ACE50A003F1F84 /* ChatRoomPreview.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -328,6 +380,7 @@
 				F057DE8D24845EB00071E75C /* String+extension.swift */,
 				F094248224861E9A0069B045 /* Bundle+extension.swift */,
 				F094248424861F440069B045 /* Date+extension.swift */,
+				4841B2DF24ACE78D003F1F84 /* Int+extension.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -340,6 +393,8 @@
 				F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */,
 				F094248B248620430069B045 /* CustomAlerts.swift */,
 				F0E7FB562487C89700B03AC0 /* TextField+border.swift */,
+				4841B2DB24ACE6A7003F1F84 /* FirebaseError.swift */,
+				4841B2DD24ACE757003F1F84 /* FirebaseLocations.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -462,18 +517,28 @@
 			files = (
 				F094247824861D480069B045 /* MoreMenu.swift in Sources */,
 				F094248324861E9A0069B045 /* Bundle+extension.swift in Sources */,
+				4841B2C724ACE3EE003F1F84 /* IndividualChatDetailView.swift in Sources */,
 				F0F623F224875EB100D0424C /* Result.swift in Sources */,
+				4841B2D424ACE4C2003F1F84 /* LastMessageView.swift in Sources */,
 				F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */,
+				4841B2D824ACE4F7003F1F84 /* ChatRoomDetailsView.swift in Sources */,
 				F094249B248672750069B045 /* FirebaseManager.swift in Sources */,
+				4841B2DA24ACE50A003F1F84 /* ChatRoomPreview.swift in Sources */,
 				F057DEA42484F3FF0071E75C /* TopBackGroundView.swift in Sources */,
 				F057DE7E24844CA60071E75C /* HomeView.swift in Sources */,
 				F094249024862C060069B045 /* ChatView.swift in Sources */,
+				4841B2CE24ACE46D003F1F84 /* ChatRoomFooter.swift in Sources */,
+				4841B2DC24ACE6A7003F1F84 /* FirebaseError.swift in Sources */,
 				F057DE9C2484CF5F0071E75C /* TopView.swift in Sources */,
 				F0F623EE24875D6700D0424C /* LogIn.swift in Sources */,
 				F057DE9524846C430071E75C /* MainView.swift in Sources */,
+				4841B2E024ACE78D003F1F84 /* Int+extension.swift in Sources */,
 				F094247F24861DB40069B045 /* AppFeedbackView.swift in Sources */,
+				4841B2CC24ACE452003F1F84 /* ChatRoomHeader.swift in Sources */,
 				F094248C248620430069B045 /* CustomAlerts.swift in Sources */,
+				4841B2D224ACE4A2003F1F84 /* ChannelListView.swift in Sources */,
 				F094248A24861F9C0069B045 /* SendEmailView.swift in Sources */,
+				4841B2D024ACE489003F1F84 /* UserListView.swift in Sources */,
 				F057DE8624844CE20071E75C /* MoreView.swift in Sources */,
 				F0E7FB67248A118E00B03AC0 /* FirebaseViewModel.swift in Sources */,
 				F094247424861C560069B045 /* MiddleView.swift in Sources */,
@@ -481,18 +546,21 @@
 				F094247D24861DA60069B045 /* DisclaimerView.swift in Sources */,
 				F057DE9324846BEC0071E75C /* TabbedView.swift in Sources */,
 				F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */,
+				4841B2D624ACE4DA003F1F84 /* MessageDetailView.swift in Sources */,
 				F057DE9824846E5A0071E75C /* Corners.swift in Sources */,
 				F057DE8324844CC70071E75C /* RegisterView.swift in Sources */,
 				F094248524861F440069B045 /* Date+extension.swift in Sources */,
 				F0E7FB65248926EB00B03AC0 /* FirebaseModels.swift in Sources */,
 				F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */,
 				F057DE9124845F980071E75C /* UserViewModel.swift in Sources */,
+				4841B2CA24ACE427003F1F84 /* GroupChatDetailView.swift in Sources */,
 				F094249524862C280069B045 /* CallView.swift in Sources */,
 				F057DE69248446310071E75C /* AppDelegate.swift in Sources */,
 				F057DE8124844CBC0071E75C /* LogInView.swift in Sources */,
 				F094247B24861D970069B045 /* AboutView.swift in Sources */,
 				F057DE6B248446310071E75C /* SceneDelegate.swift in Sources */,
 				F057DEA02484ECD40071E75C /* BottomBackgroundView.swift in Sources */,
+				4841B2DE24ACE757003F1F84 /* FirebaseLocations.swift in Sources */,
 				F094248124861DC10069B045 /* AppVersion.swift in Sources */,
 				F057DE8C24844D9A0071E75C /* UserDefaults+extension.swift in Sources */,
 				F057DE9A2484CEAF0071E75C /* MiddleBackgroundView.swift in Sources */,

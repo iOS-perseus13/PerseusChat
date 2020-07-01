@@ -10,7 +10,12 @@ import SwiftUI
 
 struct CallView: View {
     var body: some View {
-        Text("Call View")
+        NavigationView{
+            VStack{
+                Text("Call Tab")
+            }
+            .navigationBarTitle("Calls", displayMode: .inline)
+        }
     }
 }
 
