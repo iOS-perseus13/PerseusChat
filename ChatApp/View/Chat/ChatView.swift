@@ -9,31 +9,27 @@
 import SwiftUI
 
 struct ChatView: View {
-    @ObservedObject var viewMode: ChatViewModel
+    @ObservedObject var userViewModel: UserViewModel
     var body: some View {
-        HStack{
-            Text("Chat VM")
+        NavigationView{
+            Form{
+                // For group chats
+                Section(
+                    header: ChatRoomHeader(userViewModel: self.userViewModel, chatRoomType: .groupChat),
+                    footer: ChatRoomFooter(userViewModel: self.userViewModel, chatRoomType: .groupChat)
+                ) {
+                    ChannelListView(userViewModel: self.userViewModel)
+                }
+                
+                // For individual users
+                Section(
+                    header: ChatRoomHeader(userViewModel: self.userViewModel, chatRoomType: .individualChat),
+                    footer: ChatRoomFooter(userViewModel: self.userViewModel, chatRoomType: .individualChat)
+                ) {
+                    UsersListView(userViewModel: self.userViewModel)
+                }
+            }
+            .navigationBarTitle("Chat")
         }
-        
-//        NavigationView{
-//            Form{
-//                // For group chats
-//                Section(
-//                    header: ChatRoomHeader(userViewModel: self.userViewModel, chatRoomType: .groupChat),
-//                    footer: ChatRoomFooter(userViewModel: self.userViewModel, chatRoomType: .groupChat)
-//                ) {
-//                    ChannelListView(userViewModel: self.userViewModel)
-//                }
-//
-//                // For individual users
-//                Section(
-//                    header: ChatRoomHeader(userViewModel: self.userViewModel, chatRoomType: .individualChat),
-//                    footer: ChatRoomFooter(userViewModel: self.userViewModel, chatRoomType: .individualChat)
-//                ) {
-//                    UsersListView(userViewModel: self.userViewModel)
-//                }
-//            }
-//            .navigationBarTitle("Chat")
-//        }
     }
 }

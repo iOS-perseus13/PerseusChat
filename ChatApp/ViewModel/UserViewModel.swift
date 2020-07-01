@@ -22,29 +22,23 @@ protocol UserOperations{
 class UserViewModel: ObservableObject {
     @Published var logInState: LogInState = .notLoggenIn
     @Published var user: FirebaseUser?
-    @Published var viewToShow: AuthenticationViewTypes = .unknown
+    @Published var viewToShow: AuthenticationViewTypes = .login
     @Published var error: FireBaseError?
     @Published var profileImage: UIImage?
     @Published var chatRooms: [FirebaseChatRoom] = []
     @Published var users: [FirebaseUser] = []
     @Published var messages: [FirebaseMessage] = []
-    @Published var lastMessages: [FirebaseMessage] = []
-    @Published var isCalculating: Bool = false
+    @Published var lastMessages: [FirebaseMessage] = [] {
+        didSet {
+            print("found : \(lastMessages.count) items")
+        }
+    }
+    
     
     @ObservedObject var firebaseManager = FirebaseManager()
     
     init(){
-        self.isCalculating = true 
-    }
-    func clearData(){
-        self.user = nil
-        self.users = []
-        self.chatRooms = []
-        self.lastMessages = []
-        self.messages = []
-        self.profileImage = nil
-        self.viewToShow = .login
-        self.logInState = .notLoggenIn
+        
     }
     func checkForCachedUser(){
         firebaseManager.isProfileExists { (result) in
@@ -54,51 +48,27 @@ class UserViewModel: ObservableObject {
                 // otherwise save it to userDefaults
                 print("profile found through cache")
                 self.user = user
-                if let user = self.user{
-                    let loadProfile = BlockOperation{
-                        print("should load profile now")
-                        self.loadUserProfile(userID: user.id)
-                    }
-                    let loadProfileImage = BlockOperation{
-                        print("should load profile image now")
-                        self.loadUserProfileImage(userID: user.id)
-                    }
-                    // loadProfileImage.addDependency(loadProfile)
-                    let queue1 = OperationQueue()
-                    queue1.addOperation(loadProfile)
-                    let queue2 = OperationQueue()
-                    queue2.addOperation(loadProfileImage)
-                    
-                    let queue3 = OperationQueue()
-                    queue3.addOperation {
-                        self.loadUsers()
-                    }
-                    let queue4 = OperationQueue()
-                    queue4.addOperation {
-                        self.loadMessages()
-                    }
+                self.loadUserProfileImage(userID: user.id)
+                let queue1 = OperationQueue()
+                queue1.addOperation {
+                    self.loadUsers()
+                }
+                let queue2 = OperationQueue()
+                queue2.addOperation {
+                    self.loadMessages()
                 }
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)
+                //self.logInState = .notLoggenIn
+                //self.viewToShow = .login
+                // clear userDefaults cache
                 self.updateUserDefaults(operationType: .delete)
             }
         }
     }
     private func loadUserProfile(userID: String){
         let operation = BlockOperation {
-            self.firebaseManager.isProfileExists { (result) in
-                switch result{
-                case .success(let user):
-                    self.user = user
-                    if user.profileImage == nil {
-                        self.logInState = .loggedIn
-                        self.viewToShow = .home
-                        self.isCalculating = false
-                    }
-                case .failure(let error):
-                    self.error = FireBaseError.other(message: error.localizedDescription)
-                }
-            }
+            
         }
         let queue = OperationQueue()
         queue.addOperation(operation)
@@ -116,7 +86,6 @@ class UserViewModel: ObservableObject {
             case .failure(let error):
                 print("Error loading profile image: \(error.localizedDescription)")
             }
-            self.isCalculating = false
             self.logInState = .loggedIn
             self.viewToShow = .home
         }
@@ -230,17 +199,34 @@ extension UserViewModel: UserOperations{
                     self.firebaseManager.updateProfileImage(userID: user.uid, imageData: data) { (result) in
                         switch result {
                         case .success(let imageURL):
-                            self.firebaseManager.createProfile(name: name, user: user, locationURL: imageURL)
-                            self.profileImage = UIImage(data: data)
-                            completion(true)
+                            self.firebaseManager.createProfile(name: name, user: user, locationURL: imageURL) { (result) in
+                                switch result {
+                                case .success(let firebaseUser):
+                                    self.user = firebaseUser
+                                    self.profileImage = UIImage(data: data)
+                                    completion(true)
+                                case .failure(let error):
+                                    print("Error on saving picture: \(error.localizedDescription)")
+                                    completion(false)
+                                }
+                            }
                         case .failure(let error):
                             print("Unable to load profile image: \(error.localizedDescription)")
+                            completion(false)
                         }
                     }
                 }
                 else {
-                    self.firebaseManager.createProfile(name: name, user: user, locationURL: "")
-                    completion(true)
+                    self.firebaseManager.createProfile(name: name, user: user, locationURL: "") { (result) in
+                        switch result {
+                        case .success(let firebaseUser):
+                            self.user = firebaseUser
+                            completion(true)
+                        case .failure(let error):
+                            print("Unable to save profile...:\(error.localizedDescription)")
+                            completion(false)
+                        }
+                    }
                 }
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)
@@ -253,22 +239,12 @@ extension UserViewModel: UserOperations{
     func logIn(email: String, password: String, completion: @escaping(Bool)->Void) {
         firebaseManager.loginUser(email: email, password: password) { (result) in
             switch result{
-            case .success(let user):
-                // load user profile
-                let loadProfile = BlockOperation{
-                    print("should load profile now")
-                    self.loadUserProfile(userID: user.uid)
-                }
-                let loadProfileImage = BlockOperation{
-                    print("should load profile image now")
-                    self.loadUserProfileImage(userID: user.uid)
-                }
-                // loadProfileImage.addDependency(loadProfile)
-                let queue = OperationQueue()
-                queue.addOperation(loadProfile)
-                queue.addOperation(loadProfileImage)
+            case .success(_):
+                self.checkForCachedUser()
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)
+                //self.viewToShow = .login
+                //self.logInState = .error
                 print("login error: \(error.localizedDescription)")
                 completion(false)
             }
@@ -280,7 +256,6 @@ extension UserViewModel: UserOperations{
         firebaseManager.logOut { (result) in
             switch result{
             case .success(let status):
-                self.clearData()
                 completion(status)
             case .failure(let error):
                 self.error = FireBaseError.other(message: error.localizedDescription)

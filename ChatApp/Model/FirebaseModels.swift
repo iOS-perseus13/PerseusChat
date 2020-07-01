@@ -15,10 +15,6 @@ struct FirebaseUser: Codable, Hashable{
     var profileImage: String?
 }
 
-struct FirebaseUserObject: Codable{
-    var user: FirebaseUser
-}
-
 struct FirebaseMessage: Codable, Hashable{
     var id: String?
     var body: String = ""

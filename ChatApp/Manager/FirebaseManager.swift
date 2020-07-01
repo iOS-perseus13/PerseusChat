@@ -22,10 +22,6 @@ class FirebaseManager: ObservableObject {
     
     init(){
     }
-    func stopListners(){
-        self.userListner?.remove()
-        self.messageListner?.remove()
-    }
     // if profile exists load the profile
     func isProfileExists(completion: @escaping(Result<FirebaseUser,Error>)->Void){
         if let user = Auth.auth().currentUser{
@@ -33,28 +29,34 @@ class FirebaseManager: ObservableObject {
             let docRef = fireStore.collection(FirebaseLocations.userProfiles.rawValue)
             docRef.whereField("id", isEqualTo: user.uid).getDocuments { (docSnapshot, error) in
                 if let error = error {
+                    print("Error decoding firebase userProfiles: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
                 else if let dict = docSnapshot?.documents.first?.data(){
                     if let data = try? JSONSerialization.data(withJSONObject: dict, options: []) {
                         do {
                             let genericModel = try JSONDecoder().decode(FirebaseUser.self, from: data)
+                            print("user profile decoding complete")
                             completion(.success(genericModel))
                         }
                         catch (let error) {
+                            print("Error .......: \(error.localizedDescription)")
                             completion(.failure(FireBaseError.jsonDecodingError))
                         }
                     }
                     else {
+                        print("user profile decoding Error.....")
                         completion(.failure(FireBaseError.jsonDecodingError))
                     }
                 }
                 else {
+                    print("Invalid cache ....")
                     completion(.failure(FireBaseError.invalidCache))
                 }
             }
         }
         else {
+            print("no user found")
             self.isLoggedIn = false
             self.user = nil
             completion(.failure(FireBaseError.userDoesNotExist))
@@ -69,8 +71,10 @@ class FirebaseManager: ObservableObject {
         let storageProfileReference = storageReferance.child(FirebaseLocations.profileImages.rawValue).child(userID)
         storageProfileReference.getData(maxSize: 3*1024*1024) { (data, error) in
             if let data = data, let image = UIImage(data: data) {
+                print("Profile image loaded....")
                 completion(.success(image))
             } else if let error = error {
+                print("Error loading image from firebase: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
@@ -99,10 +103,12 @@ class FirebaseManager: ObservableObject {
         metaData.contentType = "image/jpg"
         storageProfileReference.putData(imageData, metadata: metaData) { (storageMetaData, error) in
             if let error = error {
+                print("Profile image could not be saved....")
                 completion(.failure(error))
             } else {
                 storageProfileReference.downloadURL { (url, error) in
                     if let error = error {
+                        print("Profile image could not be saved....")
                         completion(.failure(error))
                     } else if let url = url?.absoluteString {
                         completion(.success(url))
@@ -113,7 +119,7 @@ class FirebaseManager: ObservableObject {
     }
     
     // Create profile
-    func createProfile(name: String, user: Firebase.User, locationURL: String){
+    func createProfile(name: String, user: Firebase.User, locationURL: String, completion: @escaping(Result<FirebaseUser?,Error>)->Void){
         guard let email = user.email else {return}
         let database = Firestore.firestore()
         var userProfile: [String: Any] = [:]
@@ -125,11 +131,16 @@ class FirebaseManager: ObservableObject {
             userProfile["profileURL"] = locationURL
         }
         database.collection(FirebaseLocations.userProfiles.rawValue).addDocument(data: userProfile) { (error) in
-            if let _ = error {
+            let firebaseUser = FirebaseUser(id: user.uid, email: email, name: name, profileImage: userProfile["profileURL"] as? String)
+            print("User profile for register: \(userProfile)")
+            if let error = error {
                 print("Profile image could not be saved....")
+                completion(.failure(error))
             } else {
+                completion(.success(firebaseUser))
                 print("Profile image saved....")
             }
+            
         }
     }
     
@@ -150,10 +161,10 @@ class FirebaseManager: ObservableObject {
         guard let _ = Auth.auth().currentUser?.uid else {return}
         do {
             try Auth.auth().signOut()
-            self.stopListners()
             completion(.success(true))
         }
         catch (let error){
+            print("Logout failed: \(error.localizedDescription)")
             completion(.failure(error))
         }
     }
@@ -163,6 +174,7 @@ class FirebaseManager: ObservableObject {
         let database = Firestore.firestore()
         self.userListner = database.collection(FirebaseLocations.userProfiles.rawValue).addSnapshotListener { (snapShot, error) in
             if let error = error {
+                print("Error loading users: \(error.localizedDescription)")
                 completion(.failure(error))
             } else if let snapShot = snapShot {
                 var users : [FirebaseUser] = []
@@ -175,6 +187,7 @@ class FirebaseManager: ObservableObject {
                         }
                         catch (let error) {
                             completion(.failure(error))
+                            print("Error loading users.......: \(error.localizedDescription)")
                         }
                     }
                 }
@@ -191,6 +204,7 @@ class FirebaseManager: ObservableObject {
         let database = Firestore.firestore()
         self.messageListner = database.collection(FirebaseLocations.messages.rawValue).addSnapshotListener { (snapShot, error) in
             if let error = error {
+                print("Error loading messages: \(error.localizedDescription)")
                 completion(.failure(error))
             } else if let snapShot = snapShot {
                 var messages : [FirebaseMessage] = []
@@ -203,6 +217,7 @@ class FirebaseManager: ObservableObject {
                             messages.append(genericModel)
                         }
                         catch (let error) {
+                            print("Error .......: \(error.localizedDescription)")
                             completion(.failure(error))
                         }
                     }
@@ -220,9 +235,11 @@ class FirebaseManager: ObservableObject {
         let database = Firestore.firestore()
         database.collection(FirebaseLocations.messages.rawValue).addDocument(data: message) { (error) in
             if let error = error{
+                print("failed: \(error.localizedDescription)")
                 completion(.failure(error))
             }
             else {
+                print("success")
                 completion(.success(true))
             }
         }
@@ -238,11 +255,5 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
-    
-    // 1. isProfileExists
-    // 2. loadProfile(user: FirebaseUser)
-    // 3.
-    
-    
 }
 

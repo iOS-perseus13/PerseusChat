@@ -9,7 +9,10 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject var userViewModel: UserViewModel
+    @State var isUserNameEditing: Bool = false
+    @State var userName: String = ""
+    @State var userStatus: String = ""
     var body: some View {
         NavigationView{
             Form{
@@ -19,20 +22,24 @@ struct HomeView: View {
                 ) {
                     HStack(spacing: 10){
                         // profile picture
-                        ProfileImageSection(homeViewModel: self.homeViewModel)
+                        ProfileImageSection(userViewModel: self.userViewModel)
                             .onTapGesture {
                                 print("Change profile picture")
                         }
                         // user name
                         VStack{
                             HStack{
-                                Text(homeViewModel.firebaseViewModel.user?.name ?? "")
+                                Text(userViewModel.user?.name ?? "")
                                 Spacer()
                             }
                             HStack{
                                 Text("Status")
                                 Spacer()
                             }
+                            //                            HStack{
+                            //                                Text("Status")
+                            //                                Spacer()
+                            //                            }
                         }
                         Spacer()
                     }
@@ -43,12 +50,13 @@ struct HomeView: View {
                     HStack{
                         LogOutSection()
                             .onTapGesture {
-                                self.homeViewModel.logOut { (result) in
-                                    switch result{
+                                self.userViewModel.logOut { (status) in
+                                    switch status {
                                     case true:
-                                        self.homeViewModel.mainViewModel.switchView(.login)
+                                        self.userViewModel.logInState = .notLoggenIn
+                                        self.userViewModel.viewToShow = .login
                                     case false:
-                                        print("logout failed: ....")
+                                        print("Login failed....")
                                     }
                                 }
                         }
@@ -78,10 +86,10 @@ struct LogOutSection: View {
  Profile image section
  */
 struct ProfileImageSection: View {
-    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject var userViewModel: UserViewModel
     var body: some View{
         VStack{
-            if self.homeViewModel.firebaseViewModel.profileImage == nil {
+            if self.userViewModel.profileImage == nil {
                 Image(systemName: "person")
                     .resizable()
                     .frame(width: 75, height : 75)
@@ -90,7 +98,7 @@ struct ProfileImageSection: View {
                         .stroke(Color.blue, lineWidth: 1)
                 )
             } else {
-                Image(uiImage: self.homeViewModel.firebaseViewModel.profileImage!)
+                Image(uiImage: self.userViewModel.profileImage!)
                     .resizable()
                     .frame(width: 75, height : 75)
                     .clipShape(Circle())
@@ -100,5 +108,27 @@ struct ProfileImageSection: View {
             }
         }.padding()
         
+    }
+}
+/*
+ Editable label section
+ 1. For user name
+ 2. for current status
+ */
+struct EditableLabel: View {
+    @Binding var isEditingMode: Bool
+    @State var newText: String
+    @State var placeHolder: String
+    var body: some View{
+        ZStack {
+            if isEditingMode {
+                TextField(placeHolder, text: $newText)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+            } else {
+                Text(placeHolder)
+                    .opacity(isEditingMode ? 0 : 0.9)
+            }
+        }
     }
 }

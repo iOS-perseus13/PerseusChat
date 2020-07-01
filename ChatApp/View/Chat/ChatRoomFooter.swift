@@ -15,7 +15,11 @@ struct ChatRoomFooter: View {
         HStack{
             Spacer()
             Text(chatRoomType == .groupChat ?
+<<<<<<< HEAD
                 "Total channels: \(userViewModel.chatRooms.count)" : "Total users: \(userViewModel.users.count - 1)")
+=======
+                "Total channels: \(userViewModel.chatRooms.count)" : "Total users: \(userViewModel.users.count > 0 ?  (userViewModel.users.count - 1) : 0)")
+>>>>>>> master
         }
     }
 }

@@ -16,49 +16,7 @@ enum UserDefaultsOperationTypes: String {
     case search
 }
 
-enum UserDefaultsKeysType: String{
-    case currentUser
-    case profileImage
-}
 
-extension UserDefaults{
-    func getCurrentUser()->FirebaseUser?{
-        var result: FirebaseUser?
-        if let savedValue = object(forKey: UserDefaultsKeysType.currentUser.rawValue) as? Data {
-            let decoder = JSONDecoder()
-            if let loadedObject = try? decoder.decode(FirebaseUserObject.self, from: savedValue) {
-                result = loadedObject.user
-            }
-        }
-        return result
-    }
-    func saveUser(user: FirebaseUser) {
-        let userObject = FirebaseUserObject(user: user)
-        
-        let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(userObject) {
-            set(encoded, forKey: UserDefaultsKeysType.currentUser.rawValue)
-            synchronize()
-        }
-    }
-    func clearUserData(){
-        UserDefaults.standard.removeObject(forKey: UserDefaultsKeysType.currentUser.rawValue)
-        UserDefaults.standard.removeObject(forKey: UserDefaultsKeysType.profileImage.rawValue)
-    }
-    func getProfileImage()->UIImage?{
-        var result: UIImage?
-        if let savedValue = object(forKey: UserDefaultsKeysType.profileImage.rawValue) as? Data {
-            result = UIImage(data: savedValue)
-        }
-        return result
-    }
-    func saveProfileImage(image: UIImage) {
-        if let imageData = image.jpegData(compressionQuality: 0.35) {
-            set(imageData, forKey: UserDefaultsKeysType.profileImage.rawValue)
-            synchronize()
-        }
-    }
-}
 
 
 //extension UserDefaults{
@@ -70,7 +28,7 @@ extension UserDefaults{
 //     */
 //    func saveUser(for user: User) {
 //        let userObject = UserObject(user: user)
-//        
+//
 //        let encoder = JSONEncoder()
 //        if let encoded = try? encoder.encode(userObject) {
 //            set(encoded, forKey: UserDefaultsKeysType.currentUser.rawValue)

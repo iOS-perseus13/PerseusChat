@@ -16,7 +16,7 @@ struct TopView: View {
             Spacer()
             Button(action: {
                 // go to profile edit page
-                self.shoudlShowLoginView = true 
+                self.shoudlShowLoginView = true
             }) {
                 Image(systemName: "person")
                     .resizable()
