@@ -12,11 +12,13 @@ enum FireBaseError: Error{
     case jsonDecodingError
     case userAlreadyExists
     case userDoesNotExist
-    case other(message: String)
+    case invalidEmailAddress
+    case other(message: String?)
     var localizedDescription: String{
         switch self{
         case .userDoesNotExist: return "no such user"
         case .userAlreadyExists: return "user already exists"
+        case .invalidEmailAddress: return "invalid email address"
         default: return "\(self)"
         }
     }

@@ -8,13 +8,14 @@
 
 import SwiftUI
 struct ActivityIndicatorView: UIViewRepresentable{
-    typealias UIView = UIActivityIndicatorView
     var isAnimating: Bool
-    var configuration = { (indicator: UIView) in }
+    let style: UIActivityIndicatorView.Style
     
-    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView { UIView() }
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
+    func makeUIView(context: UIViewRepresentableContext<ActivityIndicatorView>) -> UIActivityIndicatorView {
+        return UIActivityIndicatorView(style: style)
+    }
+    
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicatorView>) {
         isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
-        configuration(uiView)
     }
 }

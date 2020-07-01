@@ -238,5 +238,11 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
+    
+    // 1. isProfileExists
+    // 2. loadProfile(user: FirebaseUser)
+    // 3.
+    
+    
 }
 

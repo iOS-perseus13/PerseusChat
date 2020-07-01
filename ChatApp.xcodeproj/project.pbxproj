@@ -42,6 +42,7 @@
 		F05D202D249C45E7001558CD /* FirebaseImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05D202C249C45E7001558CD /* FirebaseImage.swift */; };
 		F05D2031249D062F001558CD /* FirebaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05D2030249D062F001558CD /* FirebaseError.swift */; };
 		F05D2033249D0670001558CD /* FirebaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05D2032249D0670001558CD /* FirebaseLocation.swift */; };
+		F05D2035249F3997001558CD /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05D2034249F3997001558CD /* LoginViewModel.swift */; };
 		F094247424861C560069B045 /* MiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247324861C560069B045 /* MiddleView.swift */; };
 		F094247624861D150069B045 /* MoreMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247524861D150069B045 /* MoreMenuViewModel.swift */; };
 		F094247824861D480069B045 /* MoreMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094247724861D480069B045 /* MoreMenu.swift */; };
@@ -58,6 +59,19 @@
 		F094249724862D310069B045 /* AppTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094249624862D310069B045 /* AppTabs.swift */; };
 		F094249B248672750069B045 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094249A248672750069B045 /* FirebaseManager.swift */; };
 		F094249D248674270069B045 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094249C248674270069B045 /* GoogleService-Info.plist */; };
+		F0A456F0249F6158000F5E19 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456EF249F6158000F5E19 /* LoadingView.swift */; };
+		F0A456F2249FD4C8000F5E19 /* InlineErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456F1249FD4C8000F5E19 /* InlineErrorView.swift */; };
+		F0A456F8249FDF2A000F5E19 /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456F7249FDF2A000F5E19 /* LoggedInView.swift */; };
+		F0A456FA249FE419000F5E19 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456F9249FE419000F5E19 /* HomeViewModel.swift */; };
+		F0A456FC24A083EB000F5E19 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456FB24A083EB000F5E19 /* FirebaseViewModel.swift */; };
+		F0A456FE24A08F42000F5E19 /* MoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456FD24A08F42000F5E19 /* MoreViewModel.swift */; };
+		F0A4570024A09081000F5E19 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A456FF24A09081000F5E19 /* ChatViewModel.swift */; };
+		F0A4570224A0FE81000F5E19 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A4570124A0FE81000F5E19 /* MainViewModel.swift */; };
+		F0A4570524A1D409000F5E19 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F0A4570324A1D409000F5E19 /* Model.xcdatamodeld */; };
+		F0A4570724A1F429000F5E19 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A4570624A1F429000F5E19 /* BaseViewModel.swift */; };
+		F0A4570924A1F767000F5E19 /* LoggedInViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A4570824A1F767000F5E19 /* LoggedInViewViewModel.swift */; };
+		F0A4570B24A21C4D000F5E19 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A4570A24A21C4D000F5E19 /* RegisterViewModel.swift */; };
+		F0A4570D24A222D4000F5E19 /* CheckForValidInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A4570C24A222D4000F5E19 /* CheckForValidInput.swift */; };
 		F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */; };
 		F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */; };
 		F0E7FB572487C89700B03AC0 /* TextField+border.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7FB562487C89700B03AC0 /* TextField+border.swift */; };
@@ -107,6 +121,7 @@
 		F05D202C249C45E7001558CD /* FirebaseImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseImage.swift; sourceTree = "<group>"; };
 		F05D2030249D062F001558CD /* FirebaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseError.swift; sourceTree = "<group>"; };
 		F05D2032249D0670001558CD /* FirebaseLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseLocation.swift; sourceTree = "<group>"; };
+		F05D2034249F3997001558CD /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F094247324861C560069B045 /* MiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleView.swift; sourceTree = "<group>"; };
 		F094247524861D150069B045 /* MoreMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMenuViewModel.swift; sourceTree = "<group>"; };
 		F094247724861D480069B045 /* MoreMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMenu.swift; sourceTree = "<group>"; };
@@ -123,6 +138,19 @@
 		F094249624862D310069B045 /* AppTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabs.swift; sourceTree = "<group>"; };
 		F094249A248672750069B045 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		F094249C248674270069B045 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ChatApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F0A456EF249F6158000F5E19 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		F0A456F1249FD4C8000F5E19 /* InlineErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineErrorView.swift; sourceTree = "<group>"; };
+		F0A456F7249FDF2A000F5E19 /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
+		F0A456F9249FE419000F5E19 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		F0A456FB24A083EB000F5E19 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
+		F0A456FD24A08F42000F5E19 /* MoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewModel.swift; sourceTree = "<group>"; };
+		F0A456FF24A09081000F5E19 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		F0A4570124A0FE81000F5E19 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		F0A4570424A1D409000F5E19 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		F0A4570624A1F429000F5E19 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		F0A4570824A1F767000F5E19 /* LoggedInViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewViewModel.swift; sourceTree = "<group>"; };
+		F0A4570A24A21C4D000F5E19 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		F0A4570C24A222D4000F5E19 /* CheckForValidInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForValidInput.swift; sourceTree = "<group>"; };
 		F0E7FB5224877A1B00B03AC0 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		F0E7FB5424877A4800B03AC0 /* Button+with+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+with+image.swift"; sourceTree = "<group>"; };
 		F0E7FB562487C89700B03AC0 /* TextField+border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+border.swift"; sourceTree = "<group>"; };
@@ -195,6 +223,7 @@
 				F057DE73248446340071E75C /* LaunchScreen.storyboard */,
 				F057DE76248446340071E75C /* Info.plist */,
 				F057DE70248446340071E75C /* Preview Content */,
+				F0A4570324A1D409000F5E19 /* Model.xcdatamodeld */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -260,6 +289,15 @@
 			children = (
 				F057DE9024845F980071E75C /* UserViewModel.swift */,
 				F094247524861D150069B045 /* MoreMenuViewModel.swift */,
+				F05D2034249F3997001558CD /* LoginViewModel.swift */,
+				F0A456F9249FE419000F5E19 /* HomeViewModel.swift */,
+				F0A456FB24A083EB000F5E19 /* FirebaseViewModel.swift */,
+				F0A456FD24A08F42000F5E19 /* MoreViewModel.swift */,
+				F0A456FF24A09081000F5E19 /* ChatViewModel.swift */,
+				F0A4570124A0FE81000F5E19 /* MainViewModel.swift */,
+				F0A4570624A1F429000F5E19 /* BaseViewModel.swift */,
+				F0A4570824A1F767000F5E19 /* LoggedInViewViewModel.swift */,
+				F0A4570A24A21C4D000F5E19 /* RegisterViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -269,6 +307,9 @@
 			children = (
 				F057DE9724846E5A0071E75C /* Corners.swift */,
 				F05D202C249C45E7001558CD /* FirebaseImage.swift */,
+				F0A456EF249F6158000F5E19 /* LoadingView.swift */,
+				F0A456F1249FD4C8000F5E19 /* InlineErrorView.swift */,
+				F0A4570C24A222D4000F5E19 /* CheckForValidInput.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -304,6 +345,7 @@
 			children = (
 				F057DE8024844CBC0071E75C /* LogInView.swift */,
 				F057DE8224844CC70071E75C /* RegisterView.swift */,
+				F0A456F7249FDF2A000F5E19 /* LoggedInView.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -512,36 +554,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0A4570924A1F767000F5E19 /* LoggedInViewViewModel.swift in Sources */,
 				F094247824861D480069B045 /* MoreMenu.swift in Sources */,
 				F05D2017249C4483001558CD /* UserListView.swift in Sources */,
 				F094248324861E9A0069B045 /* Bundle+extension.swift in Sources */,
 				F0F623F224875EB100D0424C /* Result.swift in Sources */,
 				F05D201D249C44D1001558CD /* LastMessageView.swift in Sources */,
+				F0A456F0249F6158000F5E19 /* LoadingView.swift in Sources */,
 				F0E7FB5524877A4800B03AC0 /* Button+with+image.swift in Sources */,
 				F094249B248672750069B045 /* FirebaseManager.swift in Sources */,
 				F05D2011249C4346001558CD /* Int+extension.swift in Sources */,
+				F0A456F2249FD4C8000F5E19 /* InlineErrorView.swift in Sources */,
+				F05D2035249F3997001558CD /* LoginViewModel.swift in Sources */,
 				F057DEA42484F3FF0071E75C /* TopBackGroundView.swift in Sources */,
 				F057DE7E24844CA60071E75C /* HomeView.swift in Sources */,
 				F094249024862C060069B045 /* ChatView.swift in Sources */,
 				F05D2025249C4553001558CD /* IndividualChatDetailView.swift in Sources */,
+				F0A456FA249FE419000F5E19 /* HomeViewModel.swift in Sources */,
 				F057DE9C2484CF5F0071E75C /* TopView.swift in Sources */,
 				F0F623EE24875D6700D0424C /* LogIn.swift in Sources */,
 				F057DE9524846C430071E75C /* MainView.swift in Sources */,
 				F094247F24861DB40069B045 /* AppFeedbackView.swift in Sources */,
+				F0A456FC24A083EB000F5E19 /* FirebaseViewModel.swift in Sources */,
 				F094248C248620430069B045 /* CustomAlerts.swift in Sources */,
 				F094248A24861F9C0069B045 /* SendEmailView.swift in Sources */,
 				F05D2022249C4515001558CD /* GroupChatDetailView.swift in Sources */,
 				F057DE8624844CE20071E75C /* MoreView.swift in Sources */,
 				F05D202D249C45E7001558CD /* FirebaseImage.swift in Sources */,
 				F094247424861C560069B045 /* MiddleView.swift in Sources */,
+				F0A4570D24A222D4000F5E19 /* CheckForValidInput.swift in Sources */,
 				F0E7FB572487C89700B03AC0 /* TextField+border.swift in Sources */,
 				F057DE9324846BEC0071E75C /* TabbedView.swift in Sources */,
 				F0E7FB5324877A1B00B03AC0 /* AuthenticationView.swift in Sources */,
 				F057DE9824846E5A0071E75C /* Corners.swift in Sources */,
 				F057DE8324844CC70071E75C /* RegisterView.swift in Sources */,
 				F094248524861F440069B045 /* Date+extension.swift in Sources */,
+				F0A456FE24A08F42000F5E19 /* MoreViewModel.swift in Sources */,
 				F05D201F249C44E8001558CD /* MessageDetailView.swift in Sources */,
 				F0E7FB65248926EB00B03AC0 /* FirebaseModels.swift in Sources */,
+				F0A4570B24A21C4D000F5E19 /* RegisterViewModel.swift in Sources */,
+				F0A4570024A09081000F5E19 /* ChatViewModel.swift in Sources */,
 				F0F623F024875E7200D0424C /* ImagePickerView.swift in Sources */,
 				F057DE9124845F980071E75C /* UserViewModel.swift in Sources */,
 				F094249524862C280069B045 /* CallView.swift in Sources */,
@@ -549,6 +601,7 @@
 				F05D2031249D062F001558CD /* FirebaseError.swift in Sources */,
 				F057DE69248446310071E75C /* AppDelegate.swift in Sources */,
 				F057DE8124844CBC0071E75C /* LogInView.swift in Sources */,
+				F0A456F8249FDF2A000F5E19 /* LoggedInView.swift in Sources */,
 				F05D2015249C4467001558CD /* ChatRoomFooter.swift in Sources */,
 				F094247B24861D970069B045 /* AboutView.swift in Sources */,
 				F057DE6B248446310071E75C /* SceneDelegate.swift in Sources */,
@@ -557,14 +610,17 @@
 				F05D2013249C4445001558CD /* ChatRoomHeader.swift in Sources */,
 				F057DE8C24844D9A0071E75C /* UserDefaults+extension.swift in Sources */,
 				F057DE9A2484CEAF0071E75C /* MiddleBackgroundView.swift in Sources */,
+				F0A4570724A1F429000F5E19 /* BaseViewModel.swift in Sources */,
 				F05D2033249D0670001558CD /* FirebaseLocation.swift in Sources */,
 				F094248824861F870069B045 /* ActivityIndicatorView.swift in Sources */,
 				F05D202B249C45C8001558CD /* ChatRoomPreview.swift in Sources */,
 				F057DE8924844D370071E75C /* User.swift in Sources */,
 				F094249724862D310069B045 /* AppTabs.swift in Sources */,
 				F057DE8E24845EB00071E75C /* String+extension.swift in Sources */,
+				F0A4570524A1D409000F5E19 /* Model.xcdatamodeld in Sources */,
 				F05D2019249C449A001558CD /* ChannelListView.swift in Sources */,
 				F094247624861D150069B045 /* MoreMenuViewModel.swift in Sources */,
+				F0A4570224A0FE81000F5E19 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,6 +820,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F0A4570324A1D409000F5E19 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F0A4570424A1D409000F5E19 /* Model.xcdatamodel */,
+			);
+			currentVersion = F0A4570424A1D409000F5E19 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F057DE5D248446310071E75C /* Project object */;
 }

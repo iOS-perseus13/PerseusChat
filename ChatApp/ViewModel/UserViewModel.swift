@@ -22,18 +22,19 @@ protocol UserOperations{
 class UserViewModel: ObservableObject {
     @Published var logInState: LogInState = .notLoggenIn
     @Published var user: FirebaseUser?
-    @Published var viewToShow: AuthenticationViewTypes = .login
+    @Published var viewToShow: AuthenticationViewTypes = .unknown
     @Published var error: FireBaseError?
     @Published var profileImage: UIImage?
     @Published var chatRooms: [FirebaseChatRoom] = []
     @Published var users: [FirebaseUser] = []
     @Published var messages: [FirebaseMessage] = []
     @Published var lastMessages: [FirebaseMessage] = []
+    @Published var isCalculating: Bool = false
     
     @ObservedObject var firebaseManager = FirebaseManager()
     
     init(){
-        
+        self.isCalculating = true 
     }
     func clearData(){
         self.user = nil
@@ -89,8 +90,11 @@ class UserViewModel: ObservableObject {
                 switch result{
                 case .success(let user):
                     self.user = user
-                    self.logInState = .loggedIn
-                    self.viewToShow = .home
+                    if user.profileImage == nil {
+                        self.logInState = .loggedIn
+                        self.viewToShow = .home
+                        self.isCalculating = false
+                    }
                 case .failure(let error):
                     self.error = FireBaseError.other(message: error.localizedDescription)
                 }
@@ -112,8 +116,9 @@ class UserViewModel: ObservableObject {
             case .failure(let error):
                 print("Error loading profile image: \(error.localizedDescription)")
             }
-            // self.logInState = .loggedIn
-            // self.viewToShow = .home
+            self.isCalculating = false
+            self.logInState = .loggedIn
+            self.viewToShow = .home
         }
     }
     private func updateUserDefaults(operationType: UserDefaultsOperationTypes){
